@@ -1,0 +1,62 @@
+/* The . at the begining selects elements with the header class */
+.header
+{
+    /* Padding will work from each side in the case as no sides are stated, to effect certain sides either use padding-left...etc */
+    /* To shorthand it the order is, top, right, bottom, left */
+    padding: 10px;
+    text-align: center;
+    background-image: url("../images/MoleBanner.png");
+    background-color: #333;
+    height: 200px;    
+    background-position: center;
+    background-size: contain;
+    position: relative;
+}
+
+/* This is also a part of the header class but what is in here will only effect h1 parts in header */
+.header h1 
+{
+    font-size: 50px;
+}
+
+.header p
+{
+    font-size: 20px;
+}
+
+.seperator
+{
+    text-align: center;
+}
+
+/* Again, a class is created, this time called navbar */
+.navbar
+{
+    /* Overflow controls content, such as text, when it leaves an elements box */
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* This creates a class which will only effect the a parts in html */
+.navbar a
+{
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+/* This part of navbar will only be used if the class right is also used */
+.navbar a.right
+{
+    float: right;
+}
+
+/* This part of navbar will tell html what to do when a mouse is hovering over an "a" element*/
+.navbar a:hover
+{
+    background-color: #ddd;
+    color: black;
+}

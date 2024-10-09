@@ -1,9 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Title will change the name of the page in the browsers tab -->
         <title>
             Homepage
         </title>
+
+        <!-- Sets the unicode for the page, it is a list where all characters have a unique decimal number -->
+        <meta charset="UTF-8">
+
+        <!-- name="viewport" makes the website look good on various device resolutions -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- This links the style.css file to the html page -->
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css">
     </head>
+
+    <!-- The body section contains elements that will be visible on the page -->
+    <body>
+        <!-- div has no special meaning it groups elements together, in this case the header properties from style.css -->
+        <div class="header">
+            <!-- Sections begining with h indicate headers, e.g. h1, h2, h3 -->
+            <h1>
+                Welcome to Mole Masher!
+            </h1>
+
+            <!-- p defines a paragraph on the page -->
+            <p>
+                Stop those moles from getting to your vegetable patch!
+            </p>
+        </div>
+
+        <div class="seperator">
+            <p>
+                Register for an account below!
+            </p>
+        </div>
+
+        <div class="navbar">
+            <!-- a represents a hyperlink element, the href specifies the linked page -->
+            <a href="login.html">Login</a>
+
+            <!-- the class part in this is derived from the navbar class this is in, "right" moves it to the right -->
+            <a href="login.html" class="right">Login2</a>
+        </div>
+    </body>
 </html>
