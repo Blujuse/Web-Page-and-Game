@@ -22,7 +22,7 @@
         <div class="header">
             <!-- Sections begining with h indicate headers, e.g. h1, h2, h3 -->
             <h1>
-                Welcome to Mole Masher!
+                Mole Masher!
             </h1>
 
             <!-- p defines a paragraph on the page -->
@@ -33,16 +33,16 @@
 
         <div class="seperator">
             <p>
-                Register for an account below!
+                Create an account or Login below!
             </p>
         </div>
 
-        <div class="navbar">
-            <!-- a represents a hyperlink element, the href specifies the linked page -->
-            <a href="login.html">Login</a>
+        <div class="loginButtons">
+            <!-- onlcick tells the button what to do when clicked, the href specifies the linked page to go to -->
+            <button onclick="window.location.href='register.html';" class="left">Register</button>
 
-            <!-- the class part in this is derived from the navbar class this is in, "right" moves it to the right -->
-            <a href="login.html" class="right">Login2</a>
+            <!-- the class part in this is derived from the button class this is in, "right" moves it to the right -->
+            <button onclick="window.location.href='login.html';" class="right">Login</button>
         </div>
     </body>
 </html>

@@ -24,39 +24,46 @@
     font-size: 20px;
 }
 
+/* SEPERATE HEADER FROM BUTTONS */
+
 .seperator
 {
     text-align: center;
 }
 
-/* Again, a class is created, this time called navbar */
-.navbar
+/* LOGIN BUTTONS */
+
+.loginButtons 
 {
-    /* Overflow controls content, such as text, when it leaves an elements box */
-    overflow: hidden;
-    background-color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* This creates a class which will only effect the a parts in html */
-.navbar a
+.loginButtons button:hover
 {
-    float: left;
-    display: block;
+    background-color: brown;
+}
+
+.loginButtons button
+{
+    background-color: green;
+    border: 1px solid blue;
     color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
+    padding: 0.75% 10%;
+    cursor: pointer;
+    font-size: 85%;
+    flex: 1;
+    margin: 0 10%;
+    min-width: 50px;
 }
 
-/* This part of navbar will only be used if the class right is also used */
-.navbar a.right
+.loginButtons button.left
 {
-    float: right;
+    margin-right: 1%;
 }
 
-/* This part of navbar will tell html what to do when a mouse is hovering over an "a" element*/
-.navbar a:hover
+.loginButtons button.right
 {
-    background-color: #ddd;
-    color: black;
+    margin-left: 1%;
 }
