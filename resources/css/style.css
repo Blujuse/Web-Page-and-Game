@@ -1,3 +1,6 @@
+
+/* BELOW CLASSES ARE FOR INDEX PAGE */
+
 /* The . at the begining selects elements with the header class */
 .header
 {
@@ -66,4 +69,30 @@
 .loginButtons button.right
 {
     margin-left: 1%;
+}
+
+/* BELOW CLASSES ARE FOR LOGIN PAGE */
+
+.loginContainer
+{
+    box-sizing: content-box;
+    border-radius: 10%;
+    background-color: #333;
+    padding: 3%;
+    width: 15%;
+    position: relative;
+}
+
+.loginInputs
+{
+    text-align: center;
+    position: relative;
+    color: white;
+}
+
+.loginInputs input
+{
+    width: 100%;
+    border: 2px solid red;
+    border-radius: 4px;
 }
