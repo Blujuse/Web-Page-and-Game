@@ -96,3 +96,12 @@
     border: 2px solid red;
     border-radius: 4px;
 }
+
+.overlaytext
+{
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
