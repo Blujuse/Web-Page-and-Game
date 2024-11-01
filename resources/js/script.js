@@ -62,6 +62,10 @@ AddPlane(0, -3.6, 15, 15, planeMat)
 const player = new THREE.Mesh(geometry, material2);
 scene.add(player);
 
+let mixer;
+
+let clock = new THREE.Clock();
+
 function animate() {
 
 	group.rotation.x += 0.05;
@@ -87,6 +91,10 @@ function animate() {
     {
         player.position.x += 0.02;
     }
+
+    //Update ani mixer
+    //let delta = clock.getDelta();
+    if(mixer) mixer.update(0.01);
 
 	renderer.render( scene, camera );
 
@@ -210,6 +218,12 @@ loader.load(
         mesh = gltf.scene;
         mesh.scale.set(0.3, 0.3, 0.3);
         scene.add(mesh); //add GLTF to the scene
+
+        mixer = new THREE.AnimationMixer(mesh);
+        gltf.animations.forEach((clip) =>
+        {
+            mixer.clipAction(clip).play();
+        })
  
     },
     // called when loading is in progresses
