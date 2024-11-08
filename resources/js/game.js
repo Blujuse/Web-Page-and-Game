@@ -1,16 +1,22 @@
-import * as THREE from '/resources/ammo/three.module.js';
+import * as THREE from '/resources/ammo/three.module.js'; // Importing three.js from downloaded files
 
+// DECLARE VARIABLES
+
+// Ammo Variables
 let physicsWorld;
-let rigidBody_List = new Array();
-let tmpTransformation = undefined;
+let rigidBody_List = new Array(); // Array to store all rigidbodies
+let tmpTransformation = undefined; // Temp storage of transformation to be applied
 
+// three.js Variables
 let clock, scene, camera, renderer;
 let raycaster = new THREE.Raycaster();
-let tmpPos = new THREE.Vector3();
-let mouseCoords = new THREE.Vector2();
+let tmpPos = new THREE.Vector3(); // raycaster vector, where the projectile starts from
+let mouseCoords = new THREE.Vector2(); // x, y, position of mouse for the raycaster
 
+// Ammo.js Initialization - 
 Ammo().then(start)
 
+// After Ammo is initialised do this
 function start()
 {
     tmpTransformation = new Ammo.btTransform();
@@ -20,7 +26,6 @@ function start()
 
     createGround();
     createGridCubes();
-    createDropCube();
 
     addEventHandlers();
 
@@ -126,17 +131,6 @@ function createGridCubes()
             );
         }
      }
-}
-
-function createDropCube()
-{
-    createCube(
-        new THREE.Vector3(10, 5, 10),
-        new THREE.Vector3(15, 100, 30),
-        1000,
-        0xfc069a,
-        {x: 0.383, y: 0, z: 0.383, w: 0.924}
-    );
 }
 
 function addEventHandlers()
