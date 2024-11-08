@@ -1,6 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'https://unpkg.com/three@0.157.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "https://unpkg.com/three@0.169.0/examples/jsm/loaders/GLTFLoader.js";
+import Stats from 'https://unpkg.com/three@0.169.0/examples/jsm/libs/stats.module.js';
+
+let stats;
+
+stats = new Stats();
+document.body.appendChild( stats.dom );
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -68,6 +74,8 @@ let clock = new THREE.Clock();
 
 function animate() {
 
+    stats.update();
+    
 	group.rotation.x += 0.05;
 	group.rotation.y += 0.1;
 
@@ -242,3 +250,4 @@ loader.load(
 // Light
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 scene.add(directionalLight);
+
