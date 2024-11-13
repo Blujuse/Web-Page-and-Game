@@ -1,19 +1,33 @@
-import * as THREE from '/resources/ammo/three.module.js'; // Importing three.js from downloaded files
+import * as THREE from '/resources/ammo/three.module.js'; // Importing three.js from downloaded files in the ammo folder
+import Stats from 'https://unpkg.com/three@0.169.0/examples/jsm/libs/stats.module.js'; // Importing stats for fps counter
 
 // DECLARE VARIABLES
 
+//
 // Ammo Variables
+//
 let physicsWorld;
 let rigidBody_List = new Array(); // Array to store all rigidbodies
 let tmpTransformation = undefined; // Temp storage of transformation to be applied
 
+//
 // THREE.js Variables
+//
 let clock, scene, camera, renderer;
 let raycaster = new THREE.Raycaster();
 let tmpPos = new THREE.Vector3(); // raycaster vector, where the projectile starts from
 let mouseCoords = new THREE.Vector2(); // x, y, position of mouse for the raycaster
 
-// Ammo.js Initialization - 
+//
+// STATS VARIABLES
+//
+let stats;
+stats = new Stats();
+document.body.appendChild( stats.dom );
+
+//
+// Ammo.js Initialization
+//
 Ammo().then(start)
 
 // After Ammo is initialised do this
@@ -33,6 +47,9 @@ function start()
     createGridCubes();
 
     addEventHandlers();
+
+    // Loops the moveCamForward function which will just make the camera move continuously
+    //renderer.setAnimationLoop(moveCamForward);
 
     render();
 }
@@ -60,7 +77,7 @@ function initPhysicsWorld()
 
     // Creating the physics world using the previously set parameters
     physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-    physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0)); // Setting the gravity
+    physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0)); // Setting the gravity on y axis
 }
 
 //
@@ -78,8 +95,8 @@ function initGraphicsWorld()
 
     // Creating Camera
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/ window.innerHeight, 1, 1000 );
-    camera.position.set( -3, 10, -8 ); // Setting the cameras position
-    camera.lookAt(new THREE.Vector3( 0, 8, 0 )); // Telling the camera where to look towards
+    camera.position.set( 0, 10, -8 ); // Setting the cameras position
+    camera.lookAt(new THREE.Vector3( 0, 10, 0 )); // Telling the camera where to look towards
 
     // Creating Lighting for the scene
     let ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 ); // Setting colour and intensity
@@ -154,8 +171,8 @@ function createGround()
 {
     // Building a cube using the function I made
     createCube(
-        new THREE.Vector3(50, 2, 40), // Cube scale, x, y, z
-        new THREE.Vector3(15, -5, 30), // Cube position, x, y, z
+        new THREE.Vector3(50, 2, 100), // Cube scale, x, y, z
+        new THREE.Vector3(0, 0, 30), // Cube position, x, y, z
         0, // Object Mass
         0x567d46, // Colour of object
         {x:0, y:0, z:0, w:1} // Rotation
@@ -168,13 +185,13 @@ function createGround()
 
 function createGridCubes()
 {
-    for (var j = 0; j < 15; j += 2.2) // Number of cube collums
+    for (var j = 0; j < 15; j += 2.2) // Number of cube rows
     {
-        for (var i = 0; i < 30; i += 2.1) // Number of cube rows
+        for (var i = 0; i < 5; i += 2.1) // Number of cube collums
         {
             createCube(
                 new THREE.Vector3(2, 2, 1.5), // Cube scale, x, y, z
-                new THREE.Vector3(i, j, 25), // Cube position, x, y, z
+                new THREE.Vector3(i, j, 15), // Cube position, x, y, z
                 1, // Object Mass
                 Math.random() * 0xffffff, // Colour of object
                 {x:0, y:0, z:0, w:1} // Rotation
@@ -292,11 +309,22 @@ function updatePhysicsWorld(deltaTime)
 }
 
 //
+// MOVING CAMERA SCRIPT
+//
+
+function moveCamForward()
+{
+    camera.position.z += 0.05;
+}
+
+//
 // RENDER FUNCTION
 //
 
 function render()
 {
+    stats.update(); // Updating fps counter
+
     let deltaTime = clock.getDelta(); // Get time since last update
     updatePhysicsWorld(deltaTime); // update the physics
     renderer.render(scene, camera); // render the THREE js objects on screen
