@@ -99,7 +99,7 @@ function initGraphicsWorld()
     camera.lookAt(new THREE.Vector3( 0, 10, 0 )); // Telling the camera where to look towards
 
     // Creating Lighting for the scene
-    let ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 ); // Setting colour and intensity
+    let ambientLight = new THREE.AmbientLight( 0xcccccc, 5 ); // Setting colour and intensity
     ambientLight.position.set( 0, 10, 0 ); // Setting light position
     scene.add( ambientLight ); // Adding it into the scene
 
@@ -174,7 +174,7 @@ function createGround()
         new THREE.Vector3(50, 2, 100), // Cube scale, x, y, z
         new THREE.Vector3(0, 0, 30), // Cube position, x, y, z
         0, // Object Mass
-        0x567d46, // Colour of object
+        0xC2B280, // Colour of object
         {x:0, y:0, z:0, w:1} // Rotation
     );
 }
@@ -190,10 +190,10 @@ function createGridCubes()
         for (var i = 0; i < 5; i += 2.1) // Number of cube collums
         {
             createCube(
-                new THREE.Vector3(2, 2, 1.5), // Cube scale, x, y, z
+                new THREE.Vector3(2, 2, 2), // Cube scale, x, y, z
                 new THREE.Vector3(i, j, 15), // Cube position, x, y, z
                 1, // Object Mass
-                Math.random() * 0xffffff, // Colour of object
+                0xE1BF92, // Colour of object
                 {x:0, y:0, z:0, w:1} // Rotation
             );
         }
