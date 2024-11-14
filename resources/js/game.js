@@ -147,6 +147,7 @@ function initGraphicsWorld()
     light.shadow.camera.top = 100;
     light.shadow.camera.bottom = -100;
 
+    // Adding light to scene
     scene.add(light);
 
     // Creating Lighting for the scene
@@ -163,6 +164,7 @@ function initGraphicsWorld()
     // Below are some parameters which enhance the WebGLRenderer like adding soft shadows
     renderer.shadowMap.enabled = true;
     renderer.type = THREE.PCFSoftShadowMap;
+    renderer.antialias = true; // Antialiasing for nicer shadows
 
     // Using different colour display method to get better looking colours
     render.outputEncoding = THREE.sRGBEncoding;
@@ -182,6 +184,7 @@ function createCube(scale, position, mass, color, quaternion)
     );
     newCube.position.set(position.x, position.y, position.z);
 
+    // Cubes should be able to recieve and cast their own shadows
     newCube.castShadow = true;
     newCube.receiveShadow = true;
 
@@ -249,7 +252,7 @@ function createSandcastle(startPosition)
         for (var i = 0; i < 5; i++) { // 5 columns
             createCube(
                 new THREE.Vector3(1, 1, 1), // Size of each cube
-                new THREE.Vector3(i + startPosition.x, startPosition.y + 2, j + startPosition.z),
+                new THREE.Vector3(i + startPosition.x, startPosition.y + 2, j + startPosition.z), // Spawning each layer slightly above the last
                 0.3,
                 0xCBBD93,
                 { x: 0, y: 0, z: 0, w: 1 }
@@ -262,7 +265,7 @@ function createSandcastle(startPosition)
         for (var i = 0; i < 4; i++) { // 4 columns
             createCube(
                 new THREE.Vector3(1, 1, 1), // Size of each cube
-                new THREE.Vector3(i + startPosition.x + 0.5, startPosition.y + 3, j + startPosition.z + 0.5),
+                new THREE.Vector3(i + startPosition.x + 0.5, startPosition.y + 3, j + startPosition.z + 0.5), // Also move to center of first layer
                 0.3,
                 0xCBBD93,
                 { x: 0, y: 0, z: 0, w: 1 }
@@ -271,8 +274,8 @@ function createSandcastle(startPosition)
     }
 
     // Third Layer
-    for (var j = 0; j < 3; j++) { // 4 rows
-        for (var i = 0; i < 3; i++) { // 4 columns
+    for (var j = 0; j < 3; j++) { // 3 rows
+        for (var i = 0; i < 3; i++) { // 3 columns
             createCube(
                 new THREE.Vector3(1, 1, 1), // Size of each cube
                 new THREE.Vector3(i + startPosition.x + 1, startPosition.y + 4, j + startPosition.z + 1),
@@ -353,6 +356,7 @@ function addEventHandlers()
 
 function onMouseDown(event)
 {
+    // When no balls are left anything past this in the function wont happen
     if (currentBallCount <= 0)
     {
         return;
@@ -419,6 +423,7 @@ function onMouseDown(event)
     ball.userData.physicsBody = body;
     rigidBody_List.push(ball); // Add to the array of rigidbodies
 
+    // Remove from currentBallCount
     currentBallCount--;
 }
 
