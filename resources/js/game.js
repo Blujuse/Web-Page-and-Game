@@ -39,7 +39,7 @@ function start()
     // Used to store transforms applied to an object
     tmpTransformation = new Ammo.btTransform();
 
-    // ALL THE BELOW METHODS ARE MY OWN, JUST CALLING THEM FROM HERE
+    // ALL THE BELOW FUNCTIONS ARE MY OWN, JUST CALLING THEM FROM HERE
     initPhysicsWorld();
     initGraphicsWorld();
 

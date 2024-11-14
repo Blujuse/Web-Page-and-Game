@@ -1,12 +1,16 @@
 <!-- REFERENCES:
         https://www.youtube.com/watch?v=30bO8SBIZYw - Main Ball Shooting Mechanic
+        https://www.youtube.com/watch?v=MOlaldp1Fv4 - Splash Screen
 -->
         
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <!-- Sets the unicode for the page, it is a list where all characters have a unique decimal number -->
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+        <!-- Sets the web page size -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>
@@ -18,9 +22,19 @@
 
         <!-- Loading ammo js physics -->
         <script src="./resources/ammo/ammo.js"></script>
+
+        <!-- Loading Splash Screen Script -->
+        <script type="module" src="/resources/js/splashscreen.js"></script>
+
     </head>
 </html>
 
 <body>
+    <!-- Text for splash screen to display -->
+    <div class="gameSplash">
+        <h1 class="fadeIn"> Welcome to Ball Breakers! </h1>
+    </div>
+
+    <!-- Loading game script -->
     <script type="module" src="/resources/js/game.js"></script>
 </body>

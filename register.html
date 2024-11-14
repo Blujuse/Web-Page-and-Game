@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Ball Breakers Registration
+        </title>
+
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css">
+    </head>
+
+    <body>
+        <!-- div has no special meaning it groups elements together, in this case the header properties from style.css -->
+        <div class="header">
+            <!-- Sections begining with h indicate headers, e.g. h1, h2, h3 -->
+            <h1>
+                Sandcastle Smasher!
+            </h1>
+
+            <!-- p defines a paragraph on the page -->
+            <p>
+                Destroy the Sandcastles! Ruin Peoples Holiday!
+            </p>
+        </div>
+
+        <div class="seperator">
+            <p>
+                No Account? Sign Up Below!
+            </p>
+        </div>
+
+        <div class="loginButtons">
+            <!-- onlcick tells the button what to do when clicked, the href specifies the linked page to go to -->
+            <button onclick="window.location.href='index.html';" class="left">Homepage</button>
+
+            <!-- the class part in this is derived from the button class this is in, "right" moves it to the right -->
+            <button onclick="window.location.href='login.html';" class="right">Login</button>
+        </div>
+
+        <form>
+            <div class="loginContainer">
+                <div class="loginInputs">
+
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username"><br>
+
+                    <label for="passW">Password:</label><br>
+                    <input type="password" id="passW" name="passW">
+
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

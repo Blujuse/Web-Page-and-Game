@@ -8,7 +8,7 @@
     /* To shorthand it the order is, top, right, bottom, left */
     padding: 10px;
     text-align: center;
-    background-image: url("../images/MoleBanner.png");
+    background-image: url("../images/Beachballs.jpg");
     background-color: #333;
     height: 200px;    
     background-position: center;
@@ -34,7 +34,7 @@
     text-align: center;
 }
 
-/* LOGIN BUTTONS */
+/* HOME PAGE */
 
 .loginButtons 
 {
@@ -71,16 +71,44 @@
     margin-left: 1%;
 }
 
+.playNowButtons
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.playNowButtons button:hover
+{
+    background-color: brown;
+}
+
+.playNowButtons button
+{
+    background-color: green;
+    border: 1px solid blue;
+    color: white;
+    padding: 0.75% 10%;
+    cursor: pointer;
+    font-size: 85%;
+    flex: 1;
+    margin: 0 10%;
+    min-width: 50px;
+}
+
 /* BELOW CLASSES ARE FOR LOGIN PAGE */
 
 .loginContainer
 {
-    box-sizing: content-box;
+    box-sizing: border-box;
     border-radius: 10%;
     background-color: #333;
-    padding: 3%;
-    width: 15%;
-    position: relative;
+    padding: 30px;
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .loginInputs
@@ -95,13 +123,63 @@
     width: 100%;
     border: 2px solid red;
     border-radius: 4px;
+    padding: 2px;
+    box-sizing: border-box;
 }
 
-.overlaytext
+/* FIRST JS THREE */
+
+.overlayText
 {
     position: absolute;
     top: 20%;
     left: 20%;
     transform: translate(-50%, -50%);
     color: white;
+}
+
+/* BELOW ARE CLASSES FOR GAME PAGE */
+
+.gameSplash
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: black;
+    z-index: 200;
+    color: white;
+    text-align: center;
+    line-height: 90vh;
+}
+
+.gameSplash.displayNone
+{
+    position: fixed;
+    opacity: 0;;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: black;
+    z-index: -10;
+    color: white;
+    text-align: center;
+    line-height: 90vh;
+    transition: all 0.5s;
+}
+
+@keyframes fadeInAni
+{
+    to
+    {
+        opacity: 1;
+    }
+}
+
+.fadeIn
+{
+    opacity: 0;
+    animation: fadeInAni 1s ease-in forwards;
 }
