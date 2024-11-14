@@ -1,5 +1,6 @@
-import * as THREE from '/resources/ammo/three.module.js'; // Importing three.js from downloaded files in the ammo folder
+import * as THREE from 'three'; // Importing three.js from downloaded files in the ammo folder
 import Stats from 'https://unpkg.com/three@0.169.0/examples/jsm/libs/stats.module.js'; // Importing stats for fps counter
+import { GLTFLoader } from "https://unpkg.com/three@0.169.0/examples/jsm/loaders/GLTFLoader.js";
 
 // DECLARE VARIABLES
 
@@ -30,6 +31,24 @@ document.body.appendChild( stats.dom );
 //
 Ammo().then(start)
 
+//
+// Model Variables
+//
+const gltfLoader  = new GLTFLoader().setPath("resources/models/");
+let heliMesh;
+
+//
+// Ball Variables
+//
+let ball;
+let currentBallCount;
+let maxBalls = 5;
+
+//
+// Animation Variables
+//
+let heliMixer;
+
 // After Ammo is initialised do this
 function start()
 {
@@ -39,13 +58,23 @@ function start()
     // Used to store transforms applied to an object
     tmpTransformation = new Ammo.btTransform();
 
+    currentBallCount = maxBalls;
+
     // ALL THE BELOW FUNCTIONS ARE MY OWN, JUST CALLING THEM FROM HERE
     initPhysicsWorld();
     initGraphicsWorld();
 
+    // Creating Floor
     createGround();
-    createGridCubes();
 
+    // Building Sandcastles
+    createSandcastle(new THREE.Vector3(10, 0, 15));
+    createSandcastle(new THREE.Vector3(-10, 0, 20));
+    createSandcastle(new THREE.Vector3(0, 0, 25));
+    createSandcastle(new THREE.Vector3(8, 0, 40));
+    createSandcastle(new THREE.Vector3(-9, 0, 50));
+    createSandcastle(new THREE.Vector3(-20, 0, 38));
+    
     addEventHandlers();
 
     // Loops the moveCamForward function which will just make the camera move continuously
@@ -98,9 +127,31 @@ function initGraphicsWorld()
     camera.position.set( 0, 10, -8 ); // Setting the cameras position
     camera.lookAt(new THREE.Vector3( 0, 10, 0 )); // Telling the camera where to look towards
 
+    let light = new THREE.DirectionalLight(0xFFFFFF, 3);
+
+    // Telling the light where to be at
+    light.position.set(0, 100, 10);
+    light.target.position.set(0, 20, 15);
+
+    // Saying it should also cast shadows including the below parameters
+    light.castShadow = true;
+    light.shadow.bias = -0.001;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+    light.shadow.camera.near = 0.1;
+    light.shadow.camera.far = 500.0;
+    light.shadow.camera.near = 0.5;
+    light.shadow.camera.far = 500.0;
+    light.shadow.camera.left = 100;
+    light.shadow.camera.right = -100;
+    light.shadow.camera.top = 100;
+    light.shadow.camera.bottom = -100;
+
+    scene.add(light);
+
     // Creating Lighting for the scene
-    let ambientLight = new THREE.AmbientLight( 0xcccccc, 5 ); // Setting colour and intensity
-    ambientLight.position.set( 0, 10, 0 ); // Setting light position
+    let ambientLight = new THREE.AmbientLight( 0xcccccc, 2 ); // Setting colour and intensity
+    ambientLight.position.set( 0, 10, 15 ); // Setting light position
     scene.add( ambientLight ); // Adding it into the scene
 
     // Creating the renderer
@@ -108,6 +159,10 @@ function initGraphicsWorld()
     renderer.setPixelRatio( window.devicePixelRatio ); // Prevents blurry image output
     renderer.setSize( window.innerWidth, window.innerHeight ); // Sets the size which the scene should be rendered at
     document.body.appendChild( renderer.domElement ); // Canvas where the renderer will draw the output
+
+    // Below are some parameters which enhance the WebGLRenderer like adding soft shadows
+    renderer.shadowMap.enabled = true;
+    renderer.type = THREE.PCFSoftShadowMap;
 
     // Using different colour display method to get better looking colours
     render.outputEncoding = THREE.sRGBEncoding;
@@ -126,6 +181,10 @@ function createCube(scale, position, mass, color, quaternion)
         new THREE.MeshPhongMaterial({ color: color })
     );
     newCube.position.set(position.x, position.y, position.z);
+
+    newCube.castShadow = true;
+    newCube.receiveShadow = true;
+
     scene.add(newCube); // Add cube to scene
 
     // Creates transform variable using the btTransform from Ammo
@@ -180,24 +239,102 @@ function createGround()
 }
 
 //
-// FUNCTION TO CREATE MULTIPLE CUBES IN A ROW
+// FUNCTION TO CREATE SAND CASTLES FROM CUBES
 //
 
-function createGridCubes()
+function createSandcastle(startPosition) 
 {
-    for (var j = 0; j < 15; j += 2.2) // Number of cube rows
-    {
-        for (var i = 0; i < 5; i += 2.1) // Number of cube collums
-        {
+    // First layer
+    for (var j = 0; j < 5; j++) { // 5 rows
+        for (var i = 0; i < 5; i++) { // 5 columns
             createCube(
-                new THREE.Vector3(2, 2, 2), // Cube scale, x, y, z
-                new THREE.Vector3(i, j, 15), // Cube position, x, y, z
-                1, // Object Mass
-                0xE1BF92, // Colour of object
-                {x:0, y:0, z:0, w:1} // Rotation
+                new THREE.Vector3(1, 1, 1), // Size of each cube
+                new THREE.Vector3(i + startPosition.x, startPosition.y + 2, j + startPosition.z),
+                0.3,
+                0xCBBD93,
+                { x: 0, y: 0, z: 0, w: 1 }
             );
         }
-     }
+    }
+
+    // Second Layer
+    for (var j = 0; j < 4; j++) { // 4 rows
+        for (var i = 0; i < 4; i++) { // 4 columns
+            createCube(
+                new THREE.Vector3(1, 1, 1), // Size of each cube
+                new THREE.Vector3(i + startPosition.x + 0.5, startPosition.y + 3, j + startPosition.z + 0.5),
+                0.3,
+                0xCBBD93,
+                { x: 0, y: 0, z: 0, w: 1 }
+            );
+        }
+    }
+
+    // Third Layer
+    for (var j = 0; j < 3; j++) { // 4 rows
+        for (var i = 0; i < 3; i++) { // 4 columns
+            createCube(
+                new THREE.Vector3(1, 1, 1), // Size of each cube
+                new THREE.Vector3(i + startPosition.x + 1, startPosition.y + 4, j + startPosition.z + 1),
+                0.3,
+                0xCBBD93,
+                { x: 0, y: 0, z: 0, w: 1 }
+            );
+        }
+    }
+    
+    // Third Layer
+    for (var j = 0; j < 2; j++) { // 4 rows
+        for (var i = 0; i < 2; i++) { // 4 columns
+            createCube(
+                new THREE.Vector3(1, 1, 1), // Size of each cube
+                new THREE.Vector3(i + startPosition.x + 1.5, startPosition.y + 5, j + startPosition.z + 1.5),
+                0.3,
+                0xCBBD93,
+                { x: 0, y: 0, z: 0, w: 1 }
+            );
+        }
+    }
+}
+
+
+//
+// MODEL LOADING & ANIMATIONS
+//
+
+gltfLoader.load(
+    'low_poly_helicopter.glb',  // called when the resource is loaded
+ 
+    (gltf) => {
+        heliMesh = gltf.scene;
+        heliMesh.position.set(10, 17, 20);
+        heliMesh.rotation.set(0, 12, 0.2);
+        heliMesh.scale.set(1, 1, 1);
+        scene.add(heliMesh); //add GLTF to the scene
+
+        heliMixer = new THREE.AnimationMixer(heliMesh);
+        gltf.animations.forEach((clip) =>
+        {
+            heliMixer.clipAction(clip).play();
+        })
+ 
+    },
+
+    // called when loading is in progresses
+    (xhr) => {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+ 
+    },
+
+    // called when loading has errors
+    (error) => {
+        console.log('An error happened' + error);
+    }
+);
+
+function animations()
+{
+    if(heliMixer) heliMixer.update(0.01);
 }
 
 //
@@ -216,6 +353,11 @@ function addEventHandlers()
 
 function onMouseDown(event)
 {
+    if (currentBallCount <= 0)
+    {
+        return;
+    }
+
     // Set normalised mouse coordinates for raycaster
     // origin will be the middle of the screen
     mouseCoords.set(
@@ -238,9 +380,9 @@ function onMouseDown(event)
     let mass = 1; // Mass of ball
 
     // Creating ball using THREE js
-    let ball = new THREE.Mesh(
+    ball = new THREE.Mesh(
         new THREE.SphereGeometry(radius), // Setting ball size to radius
-        new THREE.MeshToonMaterial({ emissive: 0xff2bed, emissiveIntensity: 0.8 }) // Applies a material to the ball
+        new THREE.MeshPhongMaterial({ color: 0x26F7FD })
     );
     ball.position.set(pos.x, pos.y, pos.z); // Setting ball position
     scene.add(ball); // Adding the ball to the scene
@@ -276,6 +418,17 @@ function onMouseDown(event)
     // Add physicsBody to the THREE js ball mesh
     ball.userData.physicsBody = body;
     rigidBody_List.push(ball); // Add to the array of rigidbodies
+
+    currentBallCount--;
+}
+
+//
+// UPDATE BALL COUNT DISPLAY
+//
+function updateBallCount()
+{
+    const ballCountDisplay = document.getElementById('currentBallCount');
+    ballCountDisplay.innerText = currentBallCount;
 }
 
 //
@@ -324,6 +477,9 @@ function moveCamForward()
 function render()
 {
     stats.update(); // Updating fps counter
+
+    animations(); // Calls animations each frame
+    updateBallCount(); // Calls ball counter each frame
 
     let deltaTime = clock.getDelta(); // Get time since last update
     updatePhysicsWorld(deltaTime); // update the physics
