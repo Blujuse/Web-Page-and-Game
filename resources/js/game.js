@@ -15,6 +15,7 @@ let tmpTransformation = undefined; // Temp storage of transformation to be appli
 // THREE.js Variables
 //
 let clock, scene, camera, renderer;
+scene = new THREE.Scene(); // Setting scene up here to fix gltf loading
 let raycaster = new THREE.Raycaster();
 let tmpPos = new THREE.Vector3(); // raycaster vector, where the projectile starts from
 let mouseCoords = new THREE.Vector2(); // x, y, position of mouse for the raycaster
@@ -119,7 +120,6 @@ function initGraphicsWorld()
     clock = new THREE.Clock();
 
     // Creating the scene
-    scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xabfeff ); // Setting background to blue
 
     // Creating Camera
