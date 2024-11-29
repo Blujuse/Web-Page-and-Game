@@ -1,0 +1,15 @@
+[
+    {
+        "User":"0001",
+        "Name":"Will",
+        "Age":19,
+        "Hobbies":"Guitar"
+    },
+
+    {
+        "User":"0002",
+        "Name":"Sean",
+        "Age":23,
+        "Hobbies":"Tinder"
+    }
+]

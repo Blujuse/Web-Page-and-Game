@@ -1,0 +1,15 @@
+NodeMon myGame/app.js
+
+Basically NodeMon then whatever the js is
+
+Some more stuff if install is needed
+node -v , Check version
+npm install express , install node
+npm install mysql , install sql stuff
+
+Change this to specific install location when at home
+
+UNI :
+@cd C:\Users\S23153681\Downloads\Web-Page-and-Game
+
+HOME :
