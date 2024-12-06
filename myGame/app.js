@@ -9,7 +9,7 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "cmp5360"
+  database: "webgamedatabase"
 });
 
 con.connect(function(err) {
@@ -23,17 +23,9 @@ con.connect(function(err) {
 
 app.use(express.static(path.join(__dirname, 'static')));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.get('/some', (req, res) => {
-    res.send('Change a word!')
-  })
-
-  app.get('/test', (req, res) => {
-    res.send('This is test page')
-  })
+app.get('*', function(req,res){
+  res.status(404).sendfile(__dirname + '/static/404page.html');
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
