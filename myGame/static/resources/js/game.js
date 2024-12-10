@@ -44,6 +44,8 @@ let heliMesh;
 let ball;
 let currentBallCount;
 let maxBalls = 5;
+let ballTriggerZone = []; // Array of ball zones
+let sandcastleTriggerZone = []; // Array of sandcastle zones
 
 //
 // Animation Variables
@@ -75,7 +77,7 @@ function start()
     createSandcastle(new THREE.Vector3(8, 0, 40));
     createSandcastle(new THREE.Vector3(-9, 0, 50));
     createSandcastle(new THREE.Vector3(-20, 0, 38));
-    
+
     addEventHandlers();
 
     // Loops the moveCamForward function which will just make the camera move continuously
@@ -298,6 +300,19 @@ function createSandcastle(startPosition)
             );
         }
     }
+
+    // CREATE TRIGGER ZONE FOR CASTE
+    const triggerBoxMesh = new THREE.Mesh(
+        new THREE.BoxGeometry(3.5, 3.5, 3.5),
+        new THREE.MeshPhongMaterial({ color: 0xCBBD93 })
+    );
+    triggerBoxMesh.position.set(startPosition.x + 2, startPosition.y + 3, startPosition.z + 2);
+    triggerBoxMesh.visible = false; // Debugging purposes
+    scene.add(triggerBoxMesh);
+
+    // Add to array of trigger zones
+    let tempSandcastleTriggerZone = new THREE.Box3().setFromObject(triggerBoxMesh);
+    sandcastleTriggerZone.push(tempSandcastleTriggerZone);
 }
 
 
@@ -391,6 +406,18 @@ function onMouseDown(event)
     ball.position.set(pos.x, pos.y, pos.z); // Setting ball position
     scene.add(ball); // Adding the ball to the scene
 
+    // Creating mesh to check for collisions
+    const triggerBallMesh = new THREE.Mesh(
+        new THREE.BoxGeometry(3, 3, 3),
+        new THREE.MeshPhongMaterial({ color: 0xff0000 })
+    )
+    triggerBallMesh.visible = false; // Debugging purposes
+    scene.add(triggerBallMesh);
+
+    // Add to array of ball triggers
+    let tempBallTriggerZone = new THREE.Box3().setFromObject(triggerBallMesh);
+    ballTriggerZone.push(tempBallTriggerZone);
+
     // Setting up ammo js physics
     let transform = new Ammo.btTransform(); // Storing ball translation and rotation
     transform.setIdentity(); // reset existing transforms
@@ -434,6 +461,30 @@ function updateBallCount()
 {
     const ballCountDisplay = document.getElementById('currentBallCount');
     ballCountDisplay.innerText = currentBallCount;
+}
+
+//
+// CHECK INTERSECTION BETWEEN BALL AND CASTLES
+//
+function checkIntersection()
+{
+    // Errors if not checking if balls exist first
+    if (ball != null)
+    {
+        // Sets the ball trigger zones to the location of their respective balls
+        ballTriggerZone.forEach((ballZones) => {
+            ballZones.setFromObject(ball);
+        })
+    }
+
+    // Checks each of the ball zones against sandcastle zones
+    sandcastleTriggerZone.forEach((sandcastleZones, index) => {
+        if (ballTriggerZone.some(ballZones => ballZones.intersectsBox(sandcastleZones)))
+        {
+            console.log("HIT");
+            sandcastleTriggerZone.splice(index, 1); // Destroys whatever is currently the element, basically whatever is hit
+        }
+    })
 }
 
 //
@@ -485,6 +536,7 @@ function render()
 
     animations(); // Calls animations each frame
     updateBallCount(); // Calls ball counter each frame
+    checkIntersection(); // Calls hit check each frame
 
     let deltaTime = clock.getDelta(); // Get time since last update
     updatePhysicsWorld(deltaTime); // update the physics
