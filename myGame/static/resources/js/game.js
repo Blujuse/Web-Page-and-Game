@@ -51,6 +51,7 @@ let sandcastleTriggerZone = []; // Array of sandcastle zones
 // Sandcastle Spawn Checkers
 //
 let spawnDist = 20;
+let nextSpawn = 50;
 let spawnOnce = false;
 
 //
@@ -78,16 +79,7 @@ function start()
     createWater();
 
     // Building Sandcastles
-    /*
-    createSandcastle(new THREE.Vector3(10, 0, 15));
-    createSandcastle(new THREE.Vector3(-10, 0, 20));
-    createSandcastle(new THREE.Vector3(0, 0, 25));
-    createSandcastle(new THREE.Vector3(8, 0, 40));
-    createSandcastle(new THREE.Vector3(-9, 0, 50));
-    createSandcastle(new THREE.Vector3(-20, 0, 38));
-    */
-
-    createShootingGallery(6, 0);
+    createShootingGallery(6, 10);
     
     addEventHandlers();
 
@@ -137,8 +129,8 @@ function initGraphicsWorld()
 
     // Creating Camera
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth/ window.innerHeight, 1, 1000 );
-    camera.position.set( 0, 10, -8 ); // Setting the cameras position
-    camera.lookAt(new THREE.Vector3( 0, 10, 0 )); // Telling the camera where to look towards
+    camera.position.set( 0, 10, 0 ); // Setting the cameras position
+    camera.lookAt(new THREE.Vector3( 0, 10, 180 )); // Telling the camera where to look towards
 
     let light = new THREE.DirectionalLight(0xFFFFFF, 3);
 
@@ -246,8 +238,8 @@ function createGround()
 {
     // Building a cube using the function I made
     createCube(
-        new THREE.Vector3(50, 2, 300), // Cube scale, x, y, z
-        new THREE.Vector3(0, 0, 90), // Cube position, x, y, z
+        new THREE.Vector3(50, 2, 500), // Cube scale, x, y, z
+        new THREE.Vector3(0, 0, 150), // Cube position, x, y, z
         0, // Object Mass
         0xC2B280, // Colour of object
         {x:0, y:0, z:0, w:1} // Rotation
@@ -347,15 +339,16 @@ function createShootingGallery(maxSandcastleNum, spawnPositions)
     let currentSandcastleNum = 0;
     
     // Below numbers come from the original spawn locations of sandcastles
-    let minX = -20;
+    let minX = -10;
     let maxX = 10;
-    let minZ = spawnPositions + 15;
-    let maxZ = spawnPositions + 50;
+    let minZ = 15;
+    let maxZ = 50;
 
     while (currentSandcastleNum < maxSandcastleNum) // Loop
     {
         let posX = Math.floor(Math.random() * (maxX - minX + 1) + minX); // posX is set to random num between spawn locations
         let posZ = Math.floor(Math.random() * (maxZ - minZ + 1) + minZ); // posZ is set to random num between spawn locations
+        posZ += spawnPositions;
 
         let newPos = new THREE.Vector3(posX, 0, posZ); // Used to store posX and posZ so they can be pushed into array
         const minDistance = 10; // Distance the castles should be apart
@@ -375,7 +368,6 @@ function createShootingGallery(maxSandcastleNum, spawnPositions)
         // If the position is not too close, create the sandcastle and store the position
         if (!tooClose) 
         {
-            //console.log(currentSandcastleNum);
             createSandcastle(newPos); // Sandcastle is spawned at the random location
             sandcastlePositions.push(newPos);  // Store the position of the new sandcastle
             currentSandcastleNum++; // Increase number of sandcastles
@@ -548,7 +540,7 @@ function checkIntersection()
     sandcastleTriggerZone.forEach((sandcastleZones, index) => {
         if (ballTriggerZone.some(ballZones => ballZones.intersectsBox(sandcastleZones)))
         {
-            console.log("HIT");
+            //console.log("HIT");
             sandcastleTriggerZone.splice(index, 1); // Destroys whatever is currently the element, basically whatever is hit
 
             currentBallCount ++;
@@ -584,6 +576,18 @@ function updatePhysicsWorld(deltaTime)
             Graphics_Obj.quaternion.set(new_qua.x(), new_qua.y(), new_qua.z(), new_qua.w()); // Update object to the new rotation
         }
     }
+
+    for (let i = rigidBody_List.length - 1; i >= 0; i--) {
+        const object = rigidBody_List[i];
+        if (isBehindCamera(object, camera)) {
+            // Remove the object from scene and physics world
+            scene.remove(object);
+            physicsWorld.removeRigidBody(object.userData.physicsBody);
+            rigidBody_List.splice(i, 1); // Remove from array
+
+            //console.log("rigid remove");
+        }
+    }
 }
 
 //
@@ -602,9 +606,11 @@ function moveCamForward()
     
     if (previousCamPosZ >= spawnDist && spawnOnce == false)
     {
-        createShootingGallery(6, 50);
+        createShootingGallery(6, nextSpawn);
 
-        spawnDist += 20;
+        spawnDist += 50;
+
+        nextSpawn += 50;
 
         spawnOnce = true;
     }
@@ -614,8 +620,28 @@ function moveCamForward()
         spawnOnce = false;
     }
 
-    console.log(spawnDist);
+    //console.log("spawn dist: ", spawnDist, " next spawn: ", nextSpawn);
 }
+
+//
+// CHECK IF OBJECTS ARE BEHIND CAMERA SO THE CAN BE REMOVED
+//
+
+function isBehindCamera(object, camera) 
+{
+    const frustum = new THREE.Frustum();
+    const cameraViewProjectionMatrix = new THREE.Matrix4();
+
+    // Update the camera view-projection matrix
+    camera.updateMatrixWorld(); // Ensure camera matrix is updated
+    cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
+
+    // Check if the object's bounding box intersects the frustum
+    const objectBoundingBox = new THREE.Box3().setFromObject(object);
+    return !frustum.intersectsBox(objectBoundingBox);
+}
+
 
 //
 // RENDER FUNCTION
