@@ -48,6 +48,12 @@ let ballTriggerZone = []; // Array of ball zones
 let sandcastleTriggerZone = []; // Array of sandcastle zones
 
 //
+// Sandcastle Spawn Checkers
+//
+let spawnDist = 20;
+let spawnOnce = false;
+
+//
 // Animation Variables
 //
 let heliMixer;
@@ -69,19 +75,24 @@ function start()
 
     // Creating Floor
     createGround();
+    createWater();
 
     // Building Sandcastles
+    /*
     createSandcastle(new THREE.Vector3(10, 0, 15));
     createSandcastle(new THREE.Vector3(-10, 0, 20));
     createSandcastle(new THREE.Vector3(0, 0, 25));
     createSandcastle(new THREE.Vector3(8, 0, 40));
     createSandcastle(new THREE.Vector3(-9, 0, 50));
     createSandcastle(new THREE.Vector3(-20, 0, 38));
+    */
 
+    createShootingGallery(6, 0);
+    
     addEventHandlers();
 
     // Loops the moveCamForward function which will just make the camera move continuously
-    //renderer.setAnimationLoop(moveCamForward);
+    renderer.setAnimationLoop(moveCamForward);
 
     render();
 }
@@ -235,12 +246,23 @@ function createGround()
 {
     // Building a cube using the function I made
     createCube(
-        new THREE.Vector3(50, 2, 100), // Cube scale, x, y, z
-        new THREE.Vector3(0, 0, 30), // Cube position, x, y, z
+        new THREE.Vector3(50, 2, 300), // Cube scale, x, y, z
+        new THREE.Vector3(0, 0, 90), // Cube position, x, y, z
         0, // Object Mass
         0xC2B280, // Colour of object
         {x:0, y:0, z:0, w:1} // Rotation
     );
+}
+
+function createWater()
+{
+    // Creates a cube using the function parameters & sets its position
+    let waterCube = new THREE.Mesh(
+        new THREE.BoxGeometry(500, 2, 500),
+        new THREE.MeshPhongMaterial({ color: 0x1e90ff })
+    );
+    waterCube.position.set(0, -2, 30);
+    scene.add(waterCube);
 }
 
 //
@@ -315,6 +337,51 @@ function createSandcastle(startPosition)
     sandcastleTriggerZone.push(tempSandcastleTriggerZone);
 }
 
+//
+// CREATING "SHOOTING GALLERY"
+//
+
+function createShootingGallery(maxSandcastleNum, spawnPositions)
+{
+    let sandcastlePositions = []; // Store current sandcastle positions
+    let currentSandcastleNum = 0;
+    
+    // Below numbers come from the original spawn locations of sandcastles
+    let minX = -20;
+    let maxX = 10;
+    let minZ = spawnPositions + 15;
+    let maxZ = spawnPositions + 50;
+
+    while (currentSandcastleNum < maxSandcastleNum) // Loop
+    {
+        let posX = Math.floor(Math.random() * (maxX - minX + 1) + minX); // posX is set to random num between spawn locations
+        let posZ = Math.floor(Math.random() * (maxZ - minZ + 1) + minZ); // posZ is set to random num between spawn locations
+
+        let newPos = new THREE.Vector3(posX, 0, posZ); // Used to store posX and posZ so they can be pushed into array
+        const minDistance = 10; // Distance the castles should be apart
+
+        let tooClose = false; // Used to check if the new position is too close to any existing sandcastles
+        for (let i = 0; i < sandcastlePositions.length; i++) // Loop
+        {
+            let distance = newPos.distanceTo(sandcastlePositions[i]); // Gets the distance from spawn location to other sandcastles
+            
+            if (distance < minDistance) // Checks if the distance is less than the minDistance
+            {  
+            tooClose = true; // If it is less tooClose is true
+            break; // and then get out of the loop
+            }
+        }
+
+        // If the position is not too close, create the sandcastle and store the position
+        if (!tooClose) 
+        {
+            //console.log(currentSandcastleNum);
+            createSandcastle(newPos); // Sandcastle is spawned at the random location
+            sandcastlePositions.push(newPos);  // Store the position of the new sandcastle
+            currentSandcastleNum++; // Increase number of sandcastles
+        }
+    }
+}
 
 //
 // MODEL LOADING & ANIMATIONS
@@ -483,6 +550,8 @@ function checkIntersection()
         {
             console.log("HIT");
             sandcastleTriggerZone.splice(index, 1); // Destroys whatever is currently the element, basically whatever is hit
+
+            currentBallCount ++;
         }
     })
 }
@@ -523,7 +592,29 @@ function updatePhysicsWorld(deltaTime)
 
 function moveCamForward()
 {
-    camera.position.z += 0.05;
+    let camMoveSpeed = 0.05;
+
+    camera.position.z += camMoveSpeed;
+
+    let previousCamPosZ = camera.position.z;
+
+    //console.log(previousCamPosZ);
+    
+    if (previousCamPosZ >= spawnDist && spawnOnce == false)
+    {
+        createShootingGallery(6, 50);
+
+        spawnDist += 20;
+
+        spawnOnce = true;
+    }
+
+    if (spawnDist > previousCamPosZ)
+    {
+        spawnOnce = false;
+    }
+
+    console.log(spawnDist);
 }
 
 //
