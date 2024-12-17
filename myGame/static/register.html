@@ -40,16 +40,15 @@
             <button onclick="window.location.href='login.html';" class="right">Login</button>
         </div>
 
-        <form>
+        <form name="registerForm"action="/register"method="POST">
             <div class="loginContainer">
                 <div class="loginInputs">
-
                     <label for="username">Username:</label><br>
                     <input type="text" id="username" name="username"><br>
 
                     <label for="passW">Password:</label><br>
-                    <input type="password" id="passW" name="passW">
-
+                    <input type="password" id="passW" name="passW"><br><br>
+                    <button type="submit">Register!</button>
                 </div>
             </div>
         </form>
