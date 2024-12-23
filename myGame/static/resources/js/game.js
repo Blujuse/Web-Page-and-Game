@@ -176,7 +176,7 @@ function initGraphicsWorld()
     renderer = new THREE.WebGLRenderer( { antialias: true } ); // Turning on antialiasing to smooth out jagged edges
     renderer.setPixelRatio( window.devicePixelRatio ); // Prevents blurry image output
     renderer.setSize( window.innerWidth, window.innerHeight ); // Sets the size which the scene should be rendered at
-    document.body.appendChild( renderer.domElement ); // Canvas where the renderer will draw the output
+    document.getElementById('gameContainer').appendChild( renderer.domElement ); // Canvas where the renderer will draw the output
 
     // Below are some parameters which enhance the WebGLRenderer like adding soft shadows
     renderer.shadowMap.enabled = true;
