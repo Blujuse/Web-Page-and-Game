@@ -248,6 +248,8 @@ function createCube(scale, position, mass, color, quaternion)
     );
     let rBody = new Ammo.btRigidBody( rbInfo ); // Creates a rigid body for the cube using the info just made
 
+    rBody.setSleepingThresholds(0.01, 0.01);
+
     // Adding rigidbody to the world
     physicsWorld.addRigidBody( rBody );
 
@@ -290,10 +292,11 @@ function createWater()
 function createSandcastle(startPosition) 
 {
     let spawnDelay = 0;
+    let delayAddition = 60;
 
     // First layer
-    for (var j = 0; j < 5; j++) { // 5 rows
-        for (var i = 0; i < 5; i++) { // 5 columns
+    for (let j = 0; j < 5; j++) { // 5 rows
+        for (let i = 0; i < 5; i++) { // 5 columns
             setTimeout(() => {
                 createCube(
                     new THREE.Vector3(1, 1, 1), // Size of each cube
@@ -303,13 +306,13 @@ function createSandcastle(startPosition)
                     { x: 0, y: 0, z: 0, w: 1 }
                 );
             }, spawnDelay);
-            spawnDelay += 30;
+            spawnDelay += delayAddition;
         }
     }
 
     // Second Layer
-    for (var j = 0; j < 4; j++) { // 4 rows
-        for (var i = 0; i < 4; i++) { // 4 columns
+    for (let j = 0; j < 4; j++) { // 4 rows
+        for (let i = 0; i < 4; i++) { // 4 columns
             setTimeout(() => {
                 createCube(
                     new THREE.Vector3(1, 1, 1), // Size of each cube
@@ -319,13 +322,13 @@ function createSandcastle(startPosition)
                     { x: 0, y: 0, z: 0, w: 1 }
                 );
             }, spawnDelay);
-            spawnDelay += 30;
+            spawnDelay += delayAddition;
         }
     }
 
     // Third Layer
-    for (var j = 0; j < 3; j++) { // 3 rows
-        for (var i = 0; i < 3; i++) { // 3 columns
+    for (let j = 0; j < 3; j++) { // 3 rows
+        for (let i = 0; i < 3; i++) { // 3 columns
             setTimeout(() => {
                 createCube(
                     new THREE.Vector3(1, 1, 1), // Size of each cube
@@ -335,13 +338,13 @@ function createSandcastle(startPosition)
                     { x: 0, y: 0, z: 0, w: 1 }
                 );
             }, spawnDelay);
-            spawnDelay += 30;
+            spawnDelay += delayAddition;
         }
     }
     
     // Third Layer
-    for (var j = 0; j < 2; j++) { // 4 rows
-        for (var i = 0; i < 2; i++) { // 4 columns
+    for (let j = 0; j < 2; j++) { // 4 rows
+        for (let i = 0; i < 2; i++) { // 4 columns
             setTimeout(() => {
                 createCube(
                     new THREE.Vector3(1, 1, 1), // Size of each cube
@@ -351,7 +354,7 @@ function createSandcastle(startPosition)
                     { x: 0, y: 0, z: 0, w: 1 }
                 );
             }, spawnDelay);
-            spawnDelay += 30;
+            spawnDelay += delayAddition;
         }
     }
 
@@ -596,7 +599,7 @@ function updatePhysicsWorld(deltaTime)
 {
     // Time since last call, max num of substeps
     // Substeps are a series of seperate actions
-    physicsWorld.stepSimulation( deltaTime, 10 );
+    physicsWorld.stepSimulation( deltaTime, 7 );
 
     // Go through every rigidbody in the physics sim
     for (let i = 0; i < rigidBody_List.length; i++ )
