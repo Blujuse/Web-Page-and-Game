@@ -179,6 +179,32 @@ function initGraphicsWorld()
 // FUNCTION TO CREATE CUBES, USED BY OTHER FUNCTIONS
 //
 
+function createPerformanceCube(scale)
+{
+    let hullShape = new Ammo.btConvexHullShape();
+
+    let halfScale = scale.clone().multiplyScalar(0.5);
+
+    let vertices = 
+    [
+        new Ammo.btVector3(halfScale.x, halfScale.y, halfScale.z),
+        new Ammo.btVector3(-halfScale.x, halfScale.y, halfScale.z),
+        new Ammo.btVector3(halfScale.x, -halfScale.y, halfScale.z),
+        new Ammo.btVector3(-halfScale.x, -halfScale.y, halfScale.z),
+        new Ammo.btVector3(halfScale.x, halfScale.y, -halfScale.z),
+        new Ammo.btVector3(-halfScale.x, halfScale.y, -halfScale.z),
+        new Ammo.btVector3(halfScale.x, -halfScale.y, -halfScale.z),
+        new Ammo.btVector3(-halfScale.x, -halfScale.y, -halfScale.z),
+    ];
+
+    for (let v of vertices) 
+    {
+        hullShape.addPoint(v, true);
+    }
+
+    return hullShape;
+}
+
 function createCube(scale, position, mass, color, quaternion)
 {
 
@@ -206,7 +232,7 @@ function createCube(scale, position, mass, color, quaternion)
     let defaultMotionState = new Ammo.btDefaultMotionState( transform ); // Automatically syncs with world transform
 
     // Setting Collision Geometry
-    let structColShape = new Ammo.btBoxShape( new Ammo.btVector3(scale.x * 0.5, scale.y * 0.5, scale.z * 0.5));
+    let structColShape = createPerformanceCube(scale);
     structColShape.setMargin(0.05); // Collision margins of shape
 
     // Sets the initial object inertia
@@ -263,55 +289,69 @@ function createWater()
 
 function createSandcastle(startPosition) 
 {
+    let spawnDelay = 0;
+
     // First layer
     for (var j = 0; j < 5; j++) { // 5 rows
         for (var i = 0; i < 5; i++) { // 5 columns
-            createCube(
-                new THREE.Vector3(1, 1, 1), // Size of each cube
-                new THREE.Vector3(i + startPosition.x, startPosition.y + 2, j + startPosition.z), // Spawning each layer slightly above the last
-                0.3,
-                0xCBBD93,
-                { x: 0, y: 0, z: 0, w: 1 }
-            );
+            setTimeout(() => {
+                createCube(
+                    new THREE.Vector3(1, 1, 1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x, startPosition.y + 2, j + startPosition.z), // Spawning each layer slightly above the last
+                    0.3,
+                    0xCBBD93,
+                    { x: 0, y: 0, z: 0, w: 1 }
+                );
+            }, spawnDelay);
+            spawnDelay += 30;
         }
     }
 
     // Second Layer
     for (var j = 0; j < 4; j++) { // 4 rows
         for (var i = 0; i < 4; i++) { // 4 columns
-            createCube(
-                new THREE.Vector3(1, 1, 1), // Size of each cube
-                new THREE.Vector3(i + startPosition.x + 0.5, startPosition.y + 3, j + startPosition.z + 0.5), // Also move to center of first layer
-                0.3,
-                0xCBBD93,
-                { x: 0, y: 0, z: 0, w: 1 }
-            );
+            setTimeout(() => {
+                createCube(
+                    new THREE.Vector3(1, 1, 1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x, startPosition.y + 3, j + startPosition.z), // Spawning each layer slightly above the last
+                    0.3,
+                    0xCBBD93,
+                    { x: 0, y: 0, z: 0, w: 1 }
+                );
+            }, spawnDelay);
+            spawnDelay += 30;
         }
     }
 
     // Third Layer
     for (var j = 0; j < 3; j++) { // 3 rows
         for (var i = 0; i < 3; i++) { // 3 columns
-            createCube(
-                new THREE.Vector3(1, 1, 1), // Size of each cube
-                new THREE.Vector3(i + startPosition.x + 1, startPosition.y + 4, j + startPosition.z + 1),
-                0.3,
-                0xCBBD93,
-                { x: 0, y: 0, z: 0, w: 1 }
-            );
+            setTimeout(() => {
+                createCube(
+                    new THREE.Vector3(1, 1, 1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x, startPosition.y + 4, j + startPosition.z), // Spawning each layer slightly above the last
+                    0.3,
+                    0xCBBD93,
+                    { x: 0, y: 0, z: 0, w: 1 }
+                );
+            }, spawnDelay);
+            spawnDelay += 30;
         }
     }
     
     // Third Layer
     for (var j = 0; j < 2; j++) { // 4 rows
         for (var i = 0; i < 2; i++) { // 4 columns
-            createCube(
-                new THREE.Vector3(1, 1, 1), // Size of each cube
-                new THREE.Vector3(i + startPosition.x + 1.5, startPosition.y + 5, j + startPosition.z + 1.5),
-                0.3,
-                0xCBBD93,
-                { x: 0, y: 0, z: 0, w: 1 }
-            );
+            setTimeout(() => {
+                createCube(
+                    new THREE.Vector3(1, 1, 1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x, startPosition.y + 5, j + startPosition.z), // Spawning each layer slightly above the last
+                    0.3,
+                    0xCBBD93,
+                    { x: 0, y: 0, z: 0, w: 1 }
+                );
+            }, spawnDelay);
+            spawnDelay += 30;
         }
     }
 
