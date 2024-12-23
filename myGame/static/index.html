@@ -31,28 +31,12 @@
             </p>
         </div>
 
-        <div class="seperator">
-            <p>
-                Create an Account or Login Below!
-            </p>
-        </div>
-
-        <div class="loginButtons">
-            <!-- onlcick tells the button what to do when clicked, the href specifies the linked page to go to -->
-            <button onclick="window.location.href='register.html';" class="left">Register</button>
-
-            <!-- the class part in this is derived from the button class this is in, "right" moves it to the right -->
-            <button onclick="window.location.href='login.html';" class="right">Login</button>
-        </div>
-
-        <div class="seperator">
-            <p>
-                Don't Want an Account? Then Just Press Play!
-            </p>
-        </div>
-
-        <div class="playNowButtons">
-            <button onclick="window,location.href='game.html';">Play Now!</button>
+        <div class="navBar">
+            <ul>
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="game.html">Play Now!</a></li>
+                <li style="float:right"><a href="login.html">Login / Register</a></li>
+            </ul>
         </div>
     </body>
 </html>

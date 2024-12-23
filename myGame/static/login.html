@@ -26,18 +26,12 @@
             </p>
         </div>
 
-        <div class="seperator">
-            <p>
-                Destroy the Sandcastles! Ruin Peoples Holiday!
-            </p>
-        </div>
-
-        <div class="loginButtons">
-            <!-- onlcick tells the button what to do when clicked, the href specifies the linked page to go to -->
-            <button onclick="window.location.href='index.html';" class="left">Homepage</button>
-
-            <!-- the class part in this is derived from the button class this is in, "right" moves it to the right -->
-            <button onclick="window.location.href='register.html';" class="right">Register</button>
+        <div class="navBar">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="game.html">Play Now!</a></li>
+                <li style="float:right"><a class="active" href="login.html">Login / Register</a></li>
+            </ul>
         </div>
 
         <form name="loginForm"action="/login"method="POST">
