@@ -13,6 +13,15 @@
     </head>
 
     <body>
+
+        <div class="navBar">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="game.html">Play Now!</a></li>
+                <li class="login"><a href="login.html">Login / Register</a></li>
+            </ul>
+        </div>
+
         <!-- div has no special meaning it groups elements together, in this case the header properties from style.css -->
         <div class="header">
             <!-- Sections begining with h indicate headers, e.g. h1, h2, h3 -->
@@ -26,32 +35,39 @@
             </p>
         </div>
 
-        <div class="seperator">
-            <p>
-                No Account? Sign Up Below!
-            </p>
-        </div>
+        <section>
+            <div class="signIn">
+                <div class="content">
+    
+                    <h2>Register</h2>
 
-        <div class="loginButtons">
-            <!-- onlcick tells the button what to do when clicked, the href specifies the linked page to go to -->
-            <button onclick="window.location.href='index.html';" class="left">Homepage</button>
-
-            <!-- the class part in this is derived from the button class this is in, "right" moves it to the right -->
-            <button onclick="window.location.href='login.html';" class="right">Login</button>
-        </div>
-
-        <form name="registerForm"action="/register"method="POST">
-            <div class="loginContainer">
-                <div class="loginInputs">
-                    <label for="username">Username:</label><br>
-                    <input type="text" id="username" name="username"><br>
-
-                    <label for="userPassword">Password:</label><br>
-                    <input type="password" id="userPassword" name="userPassword"><br><br>
-
-                    <button type="submit">Register!</button>
+                    <form class ="form" name="registerForm"action="/register"method="POST">
+                        <div class="inputBox">
+                            
+                            <input type="text" id="username" name="username" required> <i>Username</i>
+    
+                        </div>
+    
+                        <div class="inputBox">
+    
+                            <input type="text" id="userPassword" name="userPassword" required> <i>Password</i>
+    
+                        </div>
+    
+                        <div class="links"> 
+    
+                            <a></a> <a href="login.html">Already have an account?</a>
+    
+                        </div>
+    
+                        <div class="inputBox"> 
+    
+                            <input type="submit" value="Register"> 
+                     
+                        </div> 
+                    </form>
                 </div>
             </div>
-        </form>
+        </section>
     </body>
 </html>
