@@ -46,6 +46,7 @@ let currentBallCount;
 let maxBalls = 5;
 let ballTriggerZone = []; // Array of ball zones
 let sandcastleTriggerZone = []; // Array of sandcastle zones
+let ballPhysicsBody;
 
 //
 // Score Variables
@@ -542,19 +543,19 @@ function onMouseDown(event)
 
     // Create Rigidbody
     let rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, colShape, localInertia); // Setup rigidbody info stuff
-    let body = new Ammo.btRigidBody(rbInfo); // Builds rigidbody using the info setup previously
+    ballPhysicsBody = new Ammo.btRigidBody(rbInfo); // Builds rigidbody using the info setup previously
 
     // Adding the rigidbody to the world
-    physicsWorld.addRigidBody(body);
+    physicsWorld.addRigidBody(ballPhysicsBody);
 
     // Placing the ball
     tmpPos.copy(raycaster.ray.direction);
     tmpPos.multiplyScalar(100); // Setting initial linear velocity of ball
 
-    body.setLinearVelocity(new Ammo.btVector3(tmpPos.x, tmpPos.y, tmpPos.z)); // Set motion of ball
+    ballPhysicsBody.setLinearVelocity(new Ammo.btVector3(tmpPos.x, tmpPos.y, tmpPos.z)); // Set motion of ball
 
     // Add physicsBody to the THREE js ball mesh
-    ball.userData.physicsBody = body;
+    ball.userData.physicsBody = ballPhysicsBody;
     rigidBody_List.push(ball); // Add to the array of rigidbodies
 
     // Remove from currentBallCount
@@ -564,6 +565,7 @@ function onMouseDown(event)
 //
 // UPDATE BALL COUNT DISPLAY && SCORE
 //
+
 function updateBallCount()
 {
     const ballCountDisplay = document.getElementById('currentBallCount');
@@ -579,6 +581,7 @@ function updateCurrentScore()
 //
 // CHECK INTERSECTION BETWEEN BALL AND CASTLES
 //
+
 function checkIntersection()
 {
     // Errors if not checking if balls exist first
@@ -602,6 +605,49 @@ function checkIntersection()
 
             currentBallCount ++;
             updateBallCount();
+
+            // Check if ball exists, prevents erroring
+            if (ball != null)
+            {
+                // Go through list of balls
+                ballTriggerZone.forEach((ballZones) => {
+                    
+                    // Dispose of each part of the ball individually
+                    // dispose method removes every part of the thing, and the ball does not include everything dispose want to remove
+                    // this causes errors doing it like this prevents them
+                    if (ballZones.geometry)
+                    {
+                        ballZones.geometry.dispose();
+                    }
+
+                    if (ballZones.material)
+                    {
+                        ballZones.material.dispose();
+                    }
+
+                    if (ballZones.parent) 
+                    {
+                        ballZones.parent.remove(ballZones);
+                    }
+
+                    // Checks is physicsWorld is there and if balls have got physics
+                    if (physicsWorld && ballZones.ballPhysicsBody) 
+                    {
+                        // Remove the ball physics from physics world
+                        physicsWorld.removeRigidBody(ballZones.ballPhysicsBody);
+    
+                        // Clean up the physics objects associated with the ball
+                        ballZones.ballPhysicsBody.dispose();  // Dispose of the rigid body in Ammo.js
+                        
+                        // Nullify physics objects
+                        ballZones.ballPhysicsBody = null;
+                    }
+                });
+
+                scene.remove(ball); // Remove ball from scene
+
+                ball = null; // make sure its gone
+            }
         }
     })
 }
