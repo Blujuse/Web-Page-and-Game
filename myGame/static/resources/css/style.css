@@ -4,9 +4,9 @@
 
 *
 {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /*                                  */
@@ -16,27 +16,27 @@
 /* The . at the begining selects elements with the header class */
 .header
 {
-    /* Padding will work from each side in the case as no sides are stated, to effect certain sides either use padding-left...etc */
-    /* To shorthand it the order is, top, right, bottom, left */
-    padding: 10px;
-    text-align: center;
-    background-image: url("../images/Beachballs.jpg");
-    background-color: #333;
-    height: 200px;    
-    background-position: center;
-    background-size: contain;
-    position: relative;
+  /* Padding will work from each side in the case as no sides are stated, to effect certain sides either use padding-left...etc */
+  /* To shorthand it the order is, top, right, bottom, left */
+  padding: 10px;
+  text-align: center;
+  background-image: url("../images/Beachballs.jpg");
+  background-color: #333;
+  height: 200px;    
+  background-position: center;
+  background-size: contain;
+  position: relative;
 }
 
 /* This is also a part of the header class but what is in here will only effect h1 parts in header */
 .header h1 
 {
-    font-size: 50px;
+  font-size: 50px;
 }
 
 .header p
 {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 /*                */
@@ -45,44 +45,44 @@
 
 .navBar ul
 {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    height: 75px;
-    overflow: hidden;
-    background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  height: 75px;
+  overflow: hidden;
+  background-color: #333;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .navBar li
 {
-    float: none;
+  float: none;
 }
 
 .navBar li.login 
 {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .navBar li a 
 {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 75px 50px;
-    text-decoration: none;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 75px 50px;
+  text-decoration: none;
 }
 
 .navBar a:hover:not(.active)
 {
-    background-color: #111;
+  background-color: #111;
 }
 
 .active 
 {
-    background-color: #04AA6D;
+  background-color: #04AA6D;
 }
 
 /*                           */
@@ -230,40 +230,30 @@ input[type="submit"]:active
 /* BELOW CLASSES ARE FOR LOGIN PAGE */
 /*                                  */
 
-.loginContainer {
-    box-sizing: border-box;
-    border-radius: 10%;
-    background-color: #333;
-    padding: 30px;
-    width: 300px;
-    max-width: 90vw;
-    margin: 20px auto; /* Adds space around the login box */
-}
-
-.loginInputs {
-    text-align: center;
-    color: white;
-}
-
-.loginInputs input {
-    width: 100%;
-    border: 2px solid red;
-    border-radius: 4px;
-    padding: 6px;
-    box-sizing: border-box;
-}
-
-/*                */
-/* FIRST JS THREE */
-/*                */
-
-.overlayText
+.loginContainer 
 {
-    position: absolute;
-    top: 20%;
-    left: 20%;
-    transform: translate(-50%, -50%);
-    color: white;
+  box-sizing: border-box;
+  border-radius: 10%;
+  background-color: #333;
+  padding: 30px;
+  width: 300px;
+  max-width: 90vw;
+  margin: 20px auto; /* Adds space around the login box */
+}
+
+.loginInputs 
+{
+  text-align: center;
+  color: white;
+}
+
+.loginInputs input 
+{
+  width: 100%;
+  border: 2px solid red;
+  border-radius: 4px;
+  padding: 6px;
+  box-sizing: border-box;
 }
 
 /*                                 */
@@ -272,55 +262,66 @@ input[type="submit"]:active
 
 .gameSplash
 {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: black;
-    z-index: 200;
-    color: white;
-    text-align: center;
-    line-height: 90vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: black;
+  z-index: 200;
+  color: white;
+  text-align: center;
+  line-height: 90vh;
 }
 
 .gameSplash.displayNone
 {
-    position: fixed;
-    opacity: 0;;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: black;
-    z-index: -10;
-    color: white;
-    text-align: center;
-    line-height: 90vh;
-    transition: all 0.5s;
+  position: fixed;
+  opacity: 0;;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: black;
+  z-index: -10;
+  color: white;
+  text-align: center;
+  line-height: 90vh;
+  transition: all 0.5s;
 }
 
 @keyframes fadeInAni
 {
-    to
-    {
-        opacity: 1;
-    }
+  to
+  {
+    opacity: 1;
+  }
 }
 
 .fadeIn
 {
-    opacity: 0;
-    animation: fadeInAni 1s ease-in forwards;
+  opacity: 0;
+  animation: fadeInAni 1s ease-in forwards;
 }
 
 .ballCountOverlay
 {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 70px;
-    font-weight: bold;
-    color: Black;
+  position: absolute;
+  top: 80px;
+  left: 90%;
+  transform: translateX(-50%);
+  font-size: 70px;
+  font-weight: bold;
+  color: Black;
+}
+
+.scoreCountOverlay
+{
+  position: absolute;
+  top: 80px;
+  left: 10%;
+  transform: translateX(-50%);
+  font-size: 70px;
+  font-weight: bold;
+  color: Black;
 }

@@ -48,6 +48,11 @@ let ballTriggerZone = []; // Array of ball zones
 let sandcastleTriggerZone = []; // Array of sandcastle zones
 
 //
+// Score Variables
+//
+let currentScore;
+
+//
 // Sandcastle Spawn Checkers
 //
 let spawnDist = 20;
@@ -68,7 +73,13 @@ function start()
     // Used to store transforms applied to an object
     tmpTransformation = new Ammo.btTransform();
 
+    // Call this here to update text size in game
     currentBallCount = maxBalls;
+    updateBallCount();
+
+    // Call this here to update text size in game
+    currentScore = 0;
+    updateCurrentScore();
 
     // ALL THE BELOW FUNCTIONS ARE MY OWN, JUST CALLING THEM FROM HERE
     initPhysicsWorld();
@@ -358,7 +369,7 @@ function createSandcastle(startPosition)
         new THREE.MeshPhongMaterial({ color: 0xCBBD93 })
     );
     triggerBoxMesh.position.set(startPosition.x + 2, startPosition.y + 2.75, startPosition.z + 1);
-    triggerBoxMesh.visible = true; // Debugging purposes
+    triggerBoxMesh.visible = false; // Debugging purposes
     scene.add(triggerBoxMesh);
 
     // Add to array of trigger zones
@@ -551,12 +562,18 @@ function onMouseDown(event)
 }
 
 //
-// UPDATE BALL COUNT DISPLAY
+// UPDATE BALL COUNT DISPLAY && SCORE
 //
 function updateBallCount()
 {
     const ballCountDisplay = document.getElementById('currentBallCount');
     ballCountDisplay.innerText = currentBallCount;
+}
+
+function updateCurrentScore()
+{
+    let scoreCountDisplay = document.getElementById('currentScoreCount');
+    scoreCountDisplay.innerText = currentScore;
 }
 
 //
@@ -580,7 +597,11 @@ function checkIntersection()
             //console.log("HIT");
             sandcastleTriggerZone.splice(index, 1); // Destroys whatever is currently the element, basically whatever is hit
 
+            currentScore += 100;
+            updateCurrentScore();
+
             currentBallCount ++;
+            updateBallCount();
         }
     })
 }
@@ -689,7 +710,6 @@ function render()
     stats.update(); // Updating fps counter
 
     animations(); // Calls animations each frame
-    updateBallCount(); // Calls ball counter each frame
     checkIntersection(); // Calls hit check each frame
 
     let deltaTime = clock.getDelta(); // Get time since last update
