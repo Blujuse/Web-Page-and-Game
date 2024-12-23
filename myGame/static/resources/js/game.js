@@ -294,13 +294,13 @@ function createSandcastle(startPosition)
     let spawnDelay = 0;
     let delayAddition = 60;
 
-    // First layer
-    for (let j = 0; j < 5; j++) { // 5 rows
-        for (let i = 0; i < 5; i++) { // 5 columns
+    // First Layer
+    for (let j = 0; j < 4; j++) { // 4 rows
+        for (let i = 0; i < 4; i++) { // 4 columns
             setTimeout(() => {
                 createCube(
-                    new THREE.Vector3(1, 1, 1), // Size of each cube
-                    new THREE.Vector3(i + startPosition.x, startPosition.y + 2, j + startPosition.z), // Spawning each layer slightly above the last
+                    new THREE.Vector3(1.1, 1, 1.1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x + 0.5, 1.9, j + startPosition.z), // Spawning each layer slightly above the last
                     0.3,
                     0xCBBD93,
                     { x: 0, y: 0, z: 0, w: 1 }
@@ -311,28 +311,12 @@ function createSandcastle(startPosition)
     }
 
     // Second Layer
-    for (let j = 0; j < 4; j++) { // 4 rows
-        for (let i = 0; i < 4; i++) { // 4 columns
-            setTimeout(() => {
-                createCube(
-                    new THREE.Vector3(1, 1, 1), // Size of each cube
-                    new THREE.Vector3(i + startPosition.x, startPosition.y + 3, j + startPosition.z), // Spawning each layer slightly above the last
-                    0.3,
-                    0xCBBD93,
-                    { x: 0, y: 0, z: 0, w: 1 }
-                );
-            }, spawnDelay);
-            spawnDelay += delayAddition;
-        }
-    }
-
-    // Third Layer
     for (let j = 0; j < 3; j++) { // 3 rows
         for (let i = 0; i < 3; i++) { // 3 columns
             setTimeout(() => {
                 createCube(
-                    new THREE.Vector3(1, 1, 1), // Size of each cube
-                    new THREE.Vector3(i + startPosition.x, startPosition.y + 4, j + startPosition.z), // Spawning each layer slightly above the last
+                    new THREE.Vector3(1.1, 1, 1.1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x + 1, 2.9, j + startPosition.z), // Spawning each layer slightly above the last
                     0.3,
                     0xCBBD93,
                     { x: 0, y: 0, z: 0, w: 1 }
@@ -342,13 +326,13 @@ function createSandcastle(startPosition)
         }
     }
     
-    // Third Layer
+    // Fourth Layer
     for (let j = 0; j < 2; j++) { // 4 rows
         for (let i = 0; i < 2; i++) { // 4 columns
             setTimeout(() => {
                 createCube(
-                    new THREE.Vector3(1, 1, 1), // Size of each cube
-                    new THREE.Vector3(i + startPosition.x, startPosition.y + 5, j + startPosition.z), // Spawning each layer slightly above the last
+                    new THREE.Vector3(1.1, 1, 1.1), // Size of each cube
+                    new THREE.Vector3(i + startPosition.x + 1.5, 3.9, j + startPosition.z), // Spawning each layer slightly above the last
                     0.3,
                     0xCBBD93,
                     { x: 0, y: 0, z: 0, w: 1 }
@@ -358,13 +342,23 @@ function createSandcastle(startPosition)
         }
     }
 
+    setTimeout(() => {
+        createCube(
+            new THREE.Vector3(1.1, 1, 1.1), // Size of each cube
+            new THREE.Vector3(startPosition.x + 2, 4.9,startPosition.z), // Spawning each layer slightly above the last
+            0.3,
+            0xCBBD93,
+            { x: 0, y: 0, z: 0, w: 1 }
+        );
+    }, spawnDelay);
+
     // CREATE TRIGGER ZONE FOR CASTE
     const triggerBoxMesh = new THREE.Mesh(
-        new THREE.BoxGeometry(3.5, 3.5, 3.5),
+        new THREE.BoxGeometry(3.5, 3.25, 3.5),
         new THREE.MeshPhongMaterial({ color: 0xCBBD93 })
     );
-    triggerBoxMesh.position.set(startPosition.x + 2, startPosition.y + 3, startPosition.z + 2);
-    triggerBoxMesh.visible = false; // Debugging purposes
+    triggerBoxMesh.position.set(startPosition.x + 2, startPosition.y + 2.75, startPosition.z + 1);
+    triggerBoxMesh.visible = true; // Debugging purposes
     scene.add(triggerBoxMesh);
 
     // Add to array of trigger zones
@@ -599,7 +593,7 @@ function updatePhysicsWorld(deltaTime)
 {
     // Time since last call, max num of substeps
     // Substeps are a series of seperate actions
-    physicsWorld.stepSimulation( deltaTime, 7 );
+    physicsWorld.stepSimulation( deltaTime, 1 );
 
     // Go through every rigidbody in the physics sim
     for (let i = 0; i < rigidBody_List.length; i++ )

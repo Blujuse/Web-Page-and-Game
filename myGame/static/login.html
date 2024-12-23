@@ -35,34 +35,35 @@
             </p>
         </div>
 
+        <!-- Grouping login box together -->
         <section>
             <div class="signIn">
                 <div class="content">
     
-                    <h2>Sign In</h2>
+                    <h2>Sign In</h2> <!-- Title of box -->
 
-                    <form class ="form" name="loginForm" action="/login" method="POST">
+                    <form class ="form" name="loginForm" action="/login" method="POST"> <!-- Links to app js to send login info to database -->
                         <div class="inputBox">
                             
-                            <input type="text" id="username" name="username" required> <i>Username</i>
+                            <input type="text" id="username" name="username" required> <i>Username</i> <!-- takes user input and searches for it using method in app js-->
     
                         </div>
     
                         <div class="inputBox">
     
-                            <input type="text" id="userPassword" name="userPassword" required> <i>Password</i>
+                            <input type="text" id="userPassword" name="userPassword" required> <i>Password</i> <!-- takes user input and matches it against username input using method in app js-->
     
                         </div>
     
                         <div class="links"> 
     
-                            <a></a> <a href="register.html">Don't have an account?</a>
+                            <a></a> <a href="register.html">Don't have an account?</a> <!-- Sends user to register page, using "<a></a>" to move the register link to the right-->
     
                         </div>
     
                         <div class="inputBox"> 
     
-                            <input type="submit" value="Login"> 
+                            <input type="submit" value="Login"> <!-- Button to send info to server -->
                      
                         </div> 
                     </form>

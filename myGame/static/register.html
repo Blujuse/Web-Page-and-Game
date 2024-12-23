@@ -41,28 +41,28 @@
     
                     <h2>Register</h2>
 
-                    <form class ="form" name="registerForm"action="/register"method="POST">
+                    <form class ="form" name="registerForm"action="/register"method="POST"> <!-- Links to app js to send login info to database -->
                         <div class="inputBox">
                             
-                            <input type="text" id="username" name="username" required> <i>Username</i>
+                            <input type="text" id="username" name="username" required> <i>Username</i> <!-- takes user input and inserts it under username into the database using method in app js-->
     
                         </div>
     
                         <div class="inputBox">
     
-                            <input type="text" id="userPassword" name="userPassword" required> <i>Password</i>
+                            <input type="text" id="userPassword" name="userPassword" required> <i>Password</i> <!-- takes user input and assigns chosen password to username in database using method in app js-->
     
                         </div>
     
                         <div class="links"> 
     
-                            <a></a> <a href="login.html">Already have an account?</a>
+                            <a></a> <a href="login.html">Already have an account?</a> <!-- links back to sign in page -->
     
                         </div>
     
                         <div class="inputBox"> 
     
-                            <input type="submit" value="Register"> 
+                            <input type="submit" value="Register"> <!-- Sends information to the database -->
                      
                         </div> 
                     </form>
