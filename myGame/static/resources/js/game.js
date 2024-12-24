@@ -70,7 +70,7 @@ const spawnEveryFewCastles = 2;
 let camMoveSpeed = 0.05;
 let speedMultiplier = 1.0;  // Start at normal speed
 let accelerationRate = 0.001;  // Controls how fast the speed increases
-const maxCamSpeed = 0.5;
+const maxCamSpeed = 0.4;
 
 //
 // ANIMATION VARIABLES
@@ -103,7 +103,7 @@ function start()
     createWater();
 
     // Building Sandcastles
-    createShootingGallery(6, 10);
+    createShootingGallery(4, 10);
     
     addEventHandlers();
 
@@ -279,40 +279,7 @@ function createCube(scale, position, mass, color, quaternion)
     // THREE js cube has the rigid body assigned to it
     newCube.userData.physicsBody = rBody;
     rigidBody_List.push(newCube); // Add the created cube to the array of rigid bodies
-
-    // Set a timer to remove the cube and its physics body after 20 seconds
-    setTimeout(() => {
-        removeCube(newCube); // Function that removes the cube and its physics body
-    }, 20000); // 20 seconds (20000 milliseconds)
 }
-
-// Function to remove the cube and its associated physics body
-function removeCube(cube) {
-    // Check if the cube exists and has a physics body
-    if (cube && cube.userData.physicsBody) {
-        // Remove from physics world
-        physicsWorld.removeRigidBody(cube.userData.physicsBody);
-        Ammo.destroy(cube.userData.physicsBody); // Clean up physics body
-
-        // Dispose of geometry and material
-        if (cube.geometry) {
-            cube.geometry.dispose();
-        }
-        if (cube.material) {
-            cube.material.dispose();
-        }
-
-        // Remove from scene
-        scene.remove(cube);
-
-        // Remove from rigid body list
-        const index = rigidBody_List.indexOf(cube);
-        if (index > -1) {
-            rigidBody_List.splice(index, 1);
-        }
-    }
-}
-
 
 //
 // FUNCTION TO CREATE FLOOR
@@ -769,7 +736,7 @@ function moveCamForward()
     // Floating point tolerance check
     if (previousCamPosZ >= spawnDist - 0.01 && spawnOnce == false)
     {
-        createShootingGallery(6, nextSpawn);
+        createShootingGallery(4, nextSpawn);
 
         spawnDist += 50;
         nextSpawn += 50;
