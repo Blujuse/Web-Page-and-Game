@@ -615,7 +615,6 @@ function checkIntersection()
             updateCurrentScore();
 
             currentBallCount ++;
-            updateBallCount();
 
             // Check if ball exists, prevents erroring
             if (ball != null)
@@ -794,6 +793,7 @@ function render()
 
     animations(); // Calls animations each frame
     checkIntersection(); // Calls hit check each frame
+    updateBallCount();
 
     let deltaTime = clock.getDelta(); // Get time since last update
     updatePhysicsWorld(deltaTime); // update the physics
