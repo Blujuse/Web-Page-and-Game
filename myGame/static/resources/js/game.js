@@ -5,14 +5,14 @@ import { GLTFLoader } from "https://unpkg.com/three@0.169.0/examples/jsm/loaders
 // DECLARE VARIABLES
 
 //
-// Ammo Variables
+// Ammo VARIABLES
 //
 let physicsWorld;
 let rigidBody_List = new Array(); // Array to store all rigidbodies
 let tmpTransformation = undefined; // Temp storage of transformation to be applied
 
 //
-// THREE.js Variables
+// THREE.js VARIABLES
 //
 let clock, scene, camera, renderer;
 scene = new THREE.Scene(); // Setting scene up here to fix gltf loading
@@ -28,18 +28,18 @@ stats = new Stats();
 document.body.appendChild( stats.dom );
 
 //
-// Ammo.js Initialization
+// Ammo.js INITIALISATION
 //
 Ammo().then(start)
 
 //
-// Model Variables
+// MODEL VARIABLES
 //
 const gltfLoader  = new GLTFLoader().setPath("resources/models/");
 let heliMesh;
 
 //
-// Ball Variables
+// BALL VARIABLES
 //
 let ball;
 let currentBallCount;
@@ -49,19 +49,31 @@ let sandcastleTriggerZone = []; // Array of sandcastle zones
 let ballPhysicsBody;
 
 //
-// Score Variables
+// SCORE VARIABLES
 //
 let currentScore;
 
 //
-// Sandcastle Spawn Checkers
+// SANDCASTLE SPAWN CHECKERS
 //
 let spawnDist = 20;
 let nextSpawn = 50;
 let spawnOnce = false;
 
 //
-// Animation Variables
+// LEVEL GENERATION & CAMERA CONTROLS VARIABLES
+//
+let groundSpawnPos = 150;
+let waterSpawnPos = 150;
+let currentCastlesSpawned = 0;
+const spawnEveryFewCastles = 2;
+let camMoveSpeed = 0.05;
+let speedMultiplier = 1.0;  // Start at normal speed
+let accelerationRate = 0.001;  // Controls how fast the speed increases
+const maxCamSpeed = 0.5;
+
+//
+// ANIMATION VARIABLES
 //
 let heliMixer;
 
@@ -87,7 +99,7 @@ function start()
     initGraphicsWorld();
 
     // Creating Floor
-    createGround();
+    createGround(groundSpawnPos);
     createWater();
 
     // Building Sandcastles
@@ -219,7 +231,6 @@ function createPerformanceCube(scale)
 
 function createCube(scale, position, mass, color, quaternion)
 {
-
     // Creates a cube using the function parameters & sets its position
     let newCube = new THREE.Mesh(
         new THREE.BoxGeometry(scale.x, scale.y, scale.z),
@@ -227,7 +238,7 @@ function createCube(scale, position, mass, color, quaternion)
     );
     newCube.position.set(position.x, position.y, position.z);
 
-    // Cubes should be able to recieve and cast their own shadows
+    // Cubes should be able to receive and cast their own shadows
     newCube.castShadow = true;
     newCube.receiveShadow = true;
 
@@ -241,59 +252,92 @@ function createCube(scale, position, mass, color, quaternion)
     // Set starting position and rotation
     transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z)); // Position
     transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w)); // Rotation
-    let defaultMotionState = new Ammo.btDefaultMotionState( transform ); // Automatically syncs with world transform
+    let defaultMotionState = new Ammo.btDefaultMotionState(transform); // Automatically syncs with world transform
 
     // Setting Collision Geometry
     let structColShape = createPerformanceCube(scale);
     structColShape.setMargin(0.05); // Collision margins of shape
 
     // Sets the initial object inertia
-    let localInertia = new Ammo.btVector3( 0, 0, 0, );
-    structColShape.calculateLocalInertia(mass, localInertia); // Calculates the intertial by taking the mass and current inertia
+    let localInertia = new Ammo.btVector3(0, 0, 0);
+    structColShape.calculateLocalInertia(mass, localInertia); // Calculates the inertial by taking the mass and current inertia
 
-    // Building rigidbody, using function paramaters
+    // Building rigidbody, using function parameters
     let rbInfo = new Ammo.btRigidBodyConstructionInfo(
         mass,
         defaultMotionState,
         structColShape,
         localInertia
     );
-    let rBody = new Ammo.btRigidBody( rbInfo ); // Creates a rigid body for the cube using the info just made
+    let rBody = new Ammo.btRigidBody(rbInfo); // Creates a rigid body for the cube using the info just made
 
     rBody.setSleepingThresholds(0.01, 0.01);
 
     // Adding rigidbody to the world
-    physicsWorld.addRigidBody( rBody );
+    physicsWorld.addRigidBody(rBody);
 
     // THREE js cube has the rigid body assigned to it
     newCube.userData.physicsBody = rBody;
     rigidBody_List.push(newCube); // Add the created cube to the array of rigid bodies
+
+    // Set a timer to remove the cube and its physics body after 20 seconds
+    setTimeout(() => {
+        removeCube(newCube); // Function that removes the cube and its physics body
+    }, 20000); // 20 seconds (20000 milliseconds)
 }
+
+// Function to remove the cube and its associated physics body
+function removeCube(cube) {
+    // Check if the cube exists and has a physics body
+    if (cube && cube.userData.physicsBody) {
+        // Remove from physics world
+        physicsWorld.removeRigidBody(cube.userData.physicsBody);
+        Ammo.destroy(cube.userData.physicsBody); // Clean up physics body
+
+        // Dispose of geometry and material
+        if (cube.geometry) {
+            cube.geometry.dispose();
+        }
+        if (cube.material) {
+            cube.material.dispose();
+        }
+
+        // Remove from scene
+        scene.remove(cube);
+
+        // Remove from rigid body list
+        const index = rigidBody_List.indexOf(cube);
+        if (index > -1) {
+            rigidBody_List.splice(index, 1);
+        }
+    }
+}
+
 
 //
 // FUNCTION TO CREATE FLOOR
 //
 
-function createGround()
+function createGround(spawnPos)
 {
     // Building a cube using the function I made
     createCube(
         new THREE.Vector3(50, 2, 500), // Cube scale, x, y, z
-        new THREE.Vector3(0, 0, 150), // Cube position, x, y, z
+        new THREE.Vector3(0, 0, spawnPos), // Cube position, x, y, z
         0, // Object Mass
         0xC2B280, // Colour of object
         {x:0, y:0, z:0, w:1} // Rotation
     );
 }
 
-function createWater()
+function createWater(spawnPos)
 {
     // Creates a cube using the function parameters & sets its position
     let waterCube = new THREE.Mesh(
         new THREE.BoxGeometry(500, 2, 500),
         new THREE.MeshPhongMaterial({ color: 0x1e90ff })
     );
-    waterCube.position.set(0, -2, 30);
+    waterCube.position.set(0, -2, spawnPos);
     scene.add(waterCube);
 }
 
@@ -304,7 +348,7 @@ function createWater()
 function createSandcastle(startPosition) 
 {
     let spawnDelay = 0;
-    let delayAddition = 60;
+    let delayAddition = 10;
 
     // First Layer
     for (let j = 0; j < 4; j++) { // 4 rows
@@ -700,21 +744,49 @@ function updatePhysicsWorld(deltaTime)
 
 function moveCamForward()
 {
-    let camMoveSpeed = 0.05;
+    // Accelerate the camera over time
+    speedMultiplier += accelerationRate;
+    let currentSpeed = camMoveSpeed * speedMultiplier;
 
-    camera.position.z += camMoveSpeed;
+    if (currentSpeed > maxCamSpeed) 
+    {
+        currentSpeed = maxCamSpeed;
+    }
+
+    // Move the camera forward at the new speed
+    camera.position.z += currentSpeed;
 
     let previousCamPosZ = camera.position.z;
 
-    //console.log(previousCamPosZ);
-    
-    if (previousCamPosZ >= spawnDist && spawnOnce == false)
+    //console.log('Sandcastles Spawned', currentCastlesSpawned);
+    //console.log('Ground Spawn', groundSpawnPos);
+    //console.log('Water Spawn', waterSpawnPos);
+    //console.log('Current Speed:', currentSpeed.toFixed(2));
+
+    // Increment first to avoid one-frame delay
+    currentCastlesSpawned++;
+
+    // Floating point tolerance check
+    if (previousCamPosZ >= spawnDist - 0.01 && spawnOnce == false)
     {
         createShootingGallery(6, nextSpawn);
 
         spawnDist += 50;
-
         nextSpawn += 50;
+
+        if (currentCastlesSpawned >= spawnEveryFewCastles)
+        {
+            // Calculate exact spawn positions to avoid drift
+            groundSpawnPos = Math.floor(previousCamPosZ / 50) * 50 + 50;
+            waterSpawnPos = groundSpawnPos;
+
+            createGround(groundSpawnPos);
+            createWater(waterSpawnPos);
+
+            //console.log('Spawning Ground');
+
+            currentCastlesSpawned = 0;
+        }
 
         spawnOnce = true;
     }
@@ -723,8 +795,6 @@ function moveCamForward()
     {
         spawnOnce = false;
     }
-
-    //console.log("spawn dist: ", spawnDist, " next spawn: ", nextSpawn);
 }
 
 //
