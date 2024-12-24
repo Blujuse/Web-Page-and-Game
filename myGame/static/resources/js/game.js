@@ -798,26 +798,6 @@ function moveCamForward()
 }
 
 //
-// CHECK IF OBJECTS ARE BEHIND CAMERA SO THE CAN BE REMOVED
-//
-
-function isBehindCamera(object, camera) 
-{
-    const frustum = new THREE.Frustum();
-    const cameraViewProjectionMatrix = new THREE.Matrix4();
-
-    // Update the camera view-projection matrix
-    camera.updateMatrixWorld(); // Ensure camera matrix is updated
-    cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-    frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
-
-    // Check if the object's bounding box intersects the frustum
-    const objectBoundingBox = new THREE.Box3().setFromObject(object);
-    return !frustum.intersectsBox(objectBoundingBox);
-}
-
-
-//
 // RENDER FUNCTION
 //
 
