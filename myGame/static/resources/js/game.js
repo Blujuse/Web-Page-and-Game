@@ -724,18 +724,6 @@ function updatePhysicsWorld(deltaTime)
             Graphics_Obj.quaternion.set(new_qua.x(), new_qua.y(), new_qua.z(), new_qua.w()); // Update object to the new rotation
         }
     }
-
-    for (let i = rigidBody_List.length - 1; i >= 0; i--) {
-        const object = rigidBody_List[i];
-        if (isBehindCamera(object, camera)) {
-            // Remove the object from scene and physics world
-            scene.remove(object);
-            physicsWorld.removeRigidBody(object.userData.physicsBody);
-            rigidBody_List.splice(i, 1); // Remove from array
-
-            //console.log("rigid remove");
-        }
-    }
 }
 
 //
