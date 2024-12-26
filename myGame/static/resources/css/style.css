@@ -335,3 +335,14 @@ input[type="submit"]:active
   font-weight: bold;
   color: Black;
 }
+
+.countdownOverlay
+{
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 70px;
+  font-weight: bold;
+  color: Black;
+}

@@ -12,4 +12,4 @@ document.addEventListener('DOMContentLoaded', (e)=>
     setTimeout(()=>{
         splash.classList.add('displayNone'); // Adds the displayNone class to hide the splash screen
     }, 2000);
-})
+});
