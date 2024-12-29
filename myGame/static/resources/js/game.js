@@ -787,6 +787,32 @@ function isBehindCamera(object, camera)
     return !frustum.intersectsBox(objectBoundingBox);
 }
 
+//
+// END GAME FUNCTION
+//
+
+function endGame()
+{
+    // When no balls are left anything past this in the function wont happen
+    if (currentBallCount <= 0)
+    {
+        document.querySelector('.signIn').classList.remove('hidden');
+
+        window.cancelAnimationFrame(renderId);
+    
+        let finalScoreCountDisplay = document.querySelector('#finalScoreCount h2');
+    
+        if (!finalScoreCountDisplay) 
+        {
+            // If h2 doesn't exist, create and append it
+            finalScoreCountDisplay = document.createElement('h2');
+            document.getElementById('finalScoreCount').appendChild(finalScoreCountDisplay);
+        }   
+    
+        // Now it's safe to set the text
+        finalScoreCountDisplay.textContent = currentScore;
+    }
+}
 
 //
 // RENDER FUNCTION
@@ -805,23 +831,12 @@ function render()
     renderId = requestAnimationFrame(render); // keep looping the render function, also using renderId to store current frame to use in pausing
     renderer.render(scene, camera); // render the THREE js objects on screen
 
-    // When no balls are left anything past this in the function wont happen
-    if (currentBallCount <= 0)
+    if (window.timerExpired == true) // Access the global variable set in countdowntimer.js
     {
-        window.cancelAnimationFrame(renderId);
-
-        let finalScoreCountDisplay = document.querySelector('#finalScoreCount h2');
-
-        if (!finalScoreCountDisplay) 
-        {
-            // If h2 doesn't exist, create and append it
-            finalScoreCountDisplay = document.createElement('h2');
-            document.getElementById('finalScoreCount').appendChild(finalScoreCountDisplay);
-        }   
-
-        // Now it's safe to set the text
-        finalScoreCountDisplay.textContent = currentScore;
+        currentBallCount = 0; // Set ball count to 0, which will end the game
     }
+
+    endGame();
 }
 
 //

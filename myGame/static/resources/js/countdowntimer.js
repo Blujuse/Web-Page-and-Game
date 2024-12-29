@@ -1,5 +1,10 @@
 // REFERENCES : https://www.w3schools.com/howto/howto_js_countdown.asp
 
+//
+// GAME END VARIABLES
+//
+window.timerExpired = false; // Create a global variable, can be accessed in other js scripts then
+
 document.addEventListener("DOMContentLoaded", function() {
     // Set countdown for 3 minutes from now
     var countDownDate = new Date(new Date().getTime() + 3 * 60 * 1000).getTime();
@@ -27,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (distance < 0) {
             clearInterval(x);
             element.textContent = "EXPIRED";
+            timerExpired = true; // Set to true so can be used in setting the game to end
         }
     }, 1000);
 });

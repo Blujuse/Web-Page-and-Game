@@ -335,3 +335,13 @@ input[type="submit"]:active
   font-weight: bold;
   color: Black;
 }
+
+.hidden 
+{
+  display: none !important; /* Using !important to override any css applied */
+}
+
+.gameEnd
+{
+  height: 1000px !important;
+}
