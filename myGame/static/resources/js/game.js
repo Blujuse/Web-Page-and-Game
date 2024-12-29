@@ -815,7 +815,40 @@ function endGame()
     
         // Now it's safe to set the text
         finalScoreCountDisplay.textContent = currentScore;
+
+        // Submit the final score to the server
+        submitHighScore(currentScore);
     }
+}
+
+function submitHighScore(score)
+{
+    // Sends request to submitHighScore, in app.js
+    fetch('/submitHighScore', {
+        method: 'POST', // Using POST
+        headers: {
+            'Content-Type': 'application/json', // Containing JSON data
+        },
+        body: JSON.stringify({ score: score }), // Turn the score to string
+        credentials: 'include'  // Sends JWT Cookies with the request
+    })
+
+    // Check if it worked or not
+    .then(response => {
+        if (response.ok) 
+        {
+            console.log('High score submitted successfully!');
+        } 
+        else 
+        {
+            response.text().then(text => console.error('Failed:', text));
+        }
+    })
+
+    // If there is another error like network or something its logged too
+    .catch(error => {
+        console.error('Error submitting high score:', error);
+    });
 }
 
 //
