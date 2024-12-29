@@ -73,6 +73,11 @@ let accelerationRate = 0.001;  // Controls how fast the speed increases
 const maxCamSpeed = 0.4;
 
 //
+// PAUSING VARIABLES
+//
+let renderId;
+
+//
 // ANIMATION VARIABLES
 //
 let heliMixer;
@@ -797,8 +802,26 @@ function render()
 
     let deltaTime = clock.getDelta(); // Get time since last update
     updatePhysicsWorld(deltaTime); // update the physics
+    renderId = requestAnimationFrame(render); // keep looping the render function, also using renderId to store current frame to use in pausing
     renderer.render(scene, camera); // render the THREE js objects on screen
-    requestAnimationFrame(render); // keep looping the render function
+
+    // When no balls are left anything past this in the function wont happen
+    if (currentBallCount <= 0)
+    {
+        window.cancelAnimationFrame(renderId);
+
+        let finalScoreCountDisplay = document.querySelector('#finalScoreCount h2');
+
+        if (!finalScoreCountDisplay) 
+        {
+            // If h2 doesn't exist, create and append it
+            finalScoreCountDisplay = document.createElement('h2');
+            document.getElementById('finalScoreCount').appendChild(finalScoreCountDisplay);
+        }   
+
+        // Now it's safe to set the text
+        finalScoreCountDisplay.textContent = currentScore;
+    }
 }
 
 //

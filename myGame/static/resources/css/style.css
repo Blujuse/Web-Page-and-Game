@@ -212,6 +212,25 @@ section .signIn .content .form .inputBox i
   cursor: pointer;
 }
 
+.signIn .content .form .inputBox a {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background: #0f0;
+  color: #000;
+  font-weight: 600;
+  font-size: 1.35em;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.signIn .content .form .inputBox a:active {
+  opacity: 0.6;
+}
+
 input[type="submit"]:active
 {
   opacity: 0.6;
@@ -224,36 +243,6 @@ input[type="submit"]:active
     width: calc(10vw - 2px);
     height: calc(10vw - 2px);
   }
-}
-
-/*                                  */
-/* BELOW CLASSES ARE FOR LOGIN PAGE */
-/*                                  */
-
-.loginContainer 
-{
-  box-sizing: border-box;
-  border-radius: 10%;
-  background-color: #333;
-  padding: 30px;
-  width: 300px;
-  max-width: 90vw;
-  margin: 20px auto; /* Adds space around the login box */
-}
-
-.loginInputs 
-{
-  text-align: center;
-  color: white;
-}
-
-.loginInputs input 
-{
-  width: 100%;
-  border: 2px solid red;
-  border-radius: 4px;
-  padding: 6px;
-  box-sizing: border-box;
 }
 
 /*                                 */
