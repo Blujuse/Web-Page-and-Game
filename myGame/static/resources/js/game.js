@@ -1,5 +1,5 @@
 import * as THREE from 'three'; // Importing three.js from downloaded files in the ammo folder
-import Stats from 'https://unpkg.com/three@0.169.0/examples/jsm/libs/stats.module.js'; // Importing stats for fps counter
+//import Stats from 'https://unpkg.com/three@0.169.0/examples/jsm/libs/stats.module.js'; // Importing stats for fps counter
 import { GLTFLoader } from "https://unpkg.com/three@0.169.0/examples/jsm/loaders/GLTFLoader.js";
 
 // DECLARE VARIABLES
@@ -23,9 +23,9 @@ let mouseCoords = new THREE.Vector2(); // x, y, position of mouse for the raycas
 //
 // STATS VARIABLES
 //
-let stats;
-stats = new Stats();
-document.body.appendChild( stats.dom );
+//let stats;
+//stats = new Stats();
+//document.body.appendChild( stats.dom );
 
 //
 // Ammo.js INITIALISATION
@@ -80,6 +80,10 @@ let renderId;
 //
 // ANIMATION VARIABLES
 //
+let msPrev = window.performance.now();
+const fps = 60;
+let msPerFrame = 1000 / fps;
+let frames = 0;
 let heliMixer;
 
 // After Ammo is initialised do this
@@ -820,7 +824,7 @@ function endGame()
 
 function render()
 {
-    stats.update(); // Updating fps counter
+    //stats.update(); // Updating fps counter
 
     animations(); // Calls animations each frame
     checkIntersection(); // Calls hit check each frame
@@ -828,7 +832,24 @@ function render()
 
     let deltaTime = clock.getDelta(); // Get time since last update
     updatePhysicsWorld(deltaTime); // update the physics
+
     renderId = requestAnimationFrame(render); // keep looping the render function, also using renderId to store current frame to use in pausing
+
+    // -- Used to limit frame rate to 60 --
+    const msNow = window.performance.now();
+    const msPassed = msNow - msPrev;
+
+    if (msPassed < msPerFrame)
+    {
+        return;
+    }
+
+    const excessTime = msPassed % msPerFrame;
+    msPrev = msNow - excessTime;
+
+    frames++;
+    // ------------------------------------
+
     renderer.render(scene, camera); // render the THREE js objects on screen
 
     if (window.timerExpired == true) // Access the global variable set in countdowntimer.js
@@ -838,6 +859,10 @@ function render()
 
     endGame();
 }
+
+setInterval(() =>{
+    console.log(frames)
+}, 1000)
 
 //
 // WINDOW RESIZE FUNCTION
