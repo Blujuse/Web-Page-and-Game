@@ -816,6 +816,26 @@ function endGame()
         // Now it's safe to set the text
         finalScoreCountDisplay.textContent = currentScore;
 
+        // Fetch and display user info (username + high score)
+        fetch('/getUserInfo', {
+            method: 'GET',
+            credentials: 'include'  // Send cookies (JWT) with request
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch user info');
+            }
+            return response.json();
+        })
+        .then(user => {
+            // Inject the username and high score into the DOM
+            document.querySelector('#highScore').textContent = user.score;
+        })
+        .catch(err => {
+            console.error('Error fetching user info:', err);
+            // Fallback text if user info isn't retrieved
+        });
+
         // Submit the final score to the server
         submitHighScore(currentScore);
     }

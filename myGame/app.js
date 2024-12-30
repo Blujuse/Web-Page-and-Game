@@ -209,11 +209,28 @@ app.post('/submitHighScore', authenticate, (req, res) => {
   sendHighScoreToServer(username, score, res); // Calls the function to upadte the users high score in database
 });
 
+// Route to Get Logged-in User Info
+app.get('/getUserInfo', authenticate, (req, res) => {
+  const username = req.user.username;  // From JWT
+  const query = 'SELECT username, score FROM user WHERE username = ?';
+
+  con.query(query, [username], (err, results) => {
+      if (err) {
+          return res.status(500).send('Error fetching user info.');
+      }
+      if (results.length > 0) {
+          res.json(results[0]);  // Send back user data
+      } else {
+          res.status(404).send('User not found.');
+      }
+  });
+});
+
 //
 // Page Linking Stuff
 //
 app.get('/registerPage', function(req,res){
-  res.sendFile(__dirname + '/static/index.html');
+  res.sendFile(__dirname + '/static/login.html');
 });
 
 app.get('/loginPage', function(req,res){
