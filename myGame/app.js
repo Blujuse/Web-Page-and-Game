@@ -97,7 +97,7 @@ function loginUser(Username, Password, res)
     if (err) 
     {
       console.error('Error fetching user:', err);
-      return res.status(404).send('Login failed due to fetching error.');
+      return res.status(500).send('Login failed due to fetching error.');
     }
     
     if (results.length > 0)
@@ -109,7 +109,7 @@ function loginUser(Username, Password, res)
         if (err)
         {
           console.error('Error comparing passwords:', err);
-          return res.status(404).send('Login failed due to password comparison error.');
+          return res.status(500).send('Login failed due to password comparison error.');
         }
 
         if (isMatch)
@@ -126,13 +126,13 @@ function loginUser(Username, Password, res)
         }
 
         console.log('Password mismatch');  // Added log if passwords don't match
-        res.status(404).send('Invalid username or password.');
+        return res.redirect('/401Page');
       });
     }
     else
     {
       console.log('User not found in database');  // Added log if user not found
-      res.status(404).send('Invalid username or password.');
+      return res.redirect('/401Page');
     }
   });
 }
@@ -240,10 +240,14 @@ app.get('/loginPage', function(req,res){
   res.sendFile(__dirname + '/static/index.html');
 });
 
+app.get('/401Page', function(req,res){
+  res.sendFile(__dirname + '/static/401page.html');
+});
+
 app.get('*', function(req,res){
   res.status(404).sendFile(__dirname + '/static/404page.html');
 });
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
-})
+});
