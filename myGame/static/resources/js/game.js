@@ -87,6 +87,15 @@ let msPerFrame = 1000 / fps;
 let frames = 0;
 let heliMixer;
 
+//
+// SOUND VARIABLES
+//
+var popSound;
+var sandSound;
+var bgm;
+var seagulls;
+var ocean;
+
 // After Ammo is initialised do this
 function start()
 {
@@ -95,6 +104,22 @@ function start()
     // no scaling
     // Used to store transforms applied to an object
     tmpTransformation = new Ammo.btTransform();
+
+    // Setting up sound stuff
+    popSound = new sound("../resources/audio/Pop.wav");
+    sandSound = new sound("../resources/audio/Sand.wav");
+
+    bgm = new sound("../resources/audio/BackgroundMusic.mp3");
+    bgm.sound.volume = 0.01;
+    bgm.play();
+
+    seagulls = new sound("../resources/audio/Seagulls.mp3");
+    seagulls.sound.volume = 0.3;
+    seagulls.play();
+
+    ocean = new sound("../resources/audio/Ocean.mp3");
+    ocean.sound.volume = 0.01;
+    ocean.play();
 
     // Call this here to update text size in game
     currentBallCount = maxBalls;
@@ -639,6 +664,8 @@ function checkIntersection()
 
             currentScore += 100;
             updateCurrentScore();
+            popSound.play();
+            sandSound.play();
 
             currentBallCount ++;
 
@@ -942,4 +969,24 @@ function onWindowResize()
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+//
+// SOUND FUNCTION
+//
+// Taken from https://www.w3schools.com/graphics/game_sound.asp
+function sound(src) 
+{
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+      this.sound.play();
+    }
+    this.stop = function(){
+      this.sound.pause();
+    }
 }
