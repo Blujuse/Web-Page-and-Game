@@ -43,20 +43,28 @@
 /* NAVIGATION BAR */
 /*                */
 
-.navBar ul
+.navBar ul 
 {
-  list-style-type: none;
+  list-style-type: none; /* Removes bullet points from the list */
   margin: 0;
   padding: 0;
-  height: 75px;
+  height: 130px;
   overflow: hidden;
-  background-color: #333;
+  background: linear-gradient(to top, #4facfe, #00f2fe); /* Gradient effect to mimic ocean */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds Shadow */
+  display: flex; /* Aligns horizontally */
+  align-items: top; /* Moves items within the navigation bar to the top */
+  z-index: +1;
 
-  display: flex;
-  align-items: center;
+  /* BELOW CODE TAKEN FROM https://css-generators.com/wavy-shapes/ */
+  --mask:
+    radial-gradient(100.62px at 50% calc(100% - 135px),#000 99%,#0000 101%) calc(50% - 90px) 0/180px 100%,
+    radial-gradient(100.62px at 50% calc(100% + 90px),#0000 99%,#000 101%) 50% calc(100% - 45px)/180px 100% repeat-x;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
 }
 
-.navBar li
+.navBar li 
 {
   float: none;
 }
@@ -69,20 +77,42 @@
 .navBar li a 
 {
   display: block;
-  color: white;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
   text-align: center;
-  padding: 75px 50px;
+  padding: 20px 50px;
   text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
-.navBar a:hover:not(.active)
+.navBar a:hover:not(.active) 
 {
-  background-color: #111;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navBar li a::after 
+{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  bottom: 0;
+  left: 0;
+  background-color: #00aaff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.navBar li a:hover::after 
+{
+  transform: scaleX(1);
 }
 
 .active 
 {
-  background-color: #04AA6D;
+  background-color: #0288d1;
+  font-weight: bold;
 }
 
 /*                           */
