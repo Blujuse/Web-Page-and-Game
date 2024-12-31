@@ -46,13 +46,16 @@ function registerUser(Username, Password, res)
   const score = 0;
   console.log("1")
   bcrypt.hash(Password, saltRounds, (err, hashedPassword) => {
+    
     if (err)
     {
       //if this is called, this means that there was an error with hashing the password
       console.error("Error hashing the password: ", err);
       return res.status(404).send('1');
     };
+
     const query = 'INSERT INTO user (username, password, score) VALUES (?, ?, ?)';
+
     con.query(query, [Username, hashedPassword, score], (err, results) => {
       if (err) 
       {

@@ -37,6 +37,7 @@ Ammo().then(start)
 //
 const gltfLoader  = new GLTFLoader().setPath("resources/models/");
 let heliMesh;
+let ballModel;
 
 //
 // BALL VARIABLES
@@ -453,7 +454,7 @@ gltfLoader.load(
  
     (gltf) => {
         heliMesh = gltf.scene;
-        heliMesh.position.set(10, 17, 20);
+        heliMesh.position.set(10, 17, 80);
         heliMesh.rotation.set(0, 12, 0.2);
         heliMesh.scale.set(1, 1, 1);
         scene.add(heliMesh); //add GLTF to the scene
@@ -497,11 +498,23 @@ function addEventHandlers()
 // READING MOUSE INPUT AND SHOOTING BALLS FUNCTION
 //
 
+// Preload the GLB model
+function loadGLBModel() 
+{
+    gltfLoader.load('beach_ball.glb', (gltf) => {
+        ballModel = gltf.scene;
+    });
+}
+
+// Call this function at the start to load the model
+loadGLBModel();
+
 function onMouseDown(event)
 {
     // When no balls are left anything past this in the function wont happen
     if (currentBallCount <= 0)
     {
+        endGame();
         return;
     }
 
@@ -527,12 +540,16 @@ function onMouseDown(event)
     let mass = 1; // Mass of ball
 
     // Creating ball using THREE js
-    ball = new THREE.Mesh(
-        new THREE.SphereGeometry(radius), // Setting ball size to radius
-        new THREE.MeshPhongMaterial({ color: 0x26F7FD })
-    );
-    ball.position.set(pos.x, pos.y, pos.z); // Setting ball position
-    scene.add(ball); // Adding the ball to the scene
+    if (ballModel) {
+        // Clone the model to ensure each ball is unique
+        ball = ballModel.clone();
+        ball.position.set(pos.x, pos.y, pos.z);
+        ball.scale.set(1, 1, 1); // Adjust the scale as needed
+        scene.add(ball);
+    } else {
+        console.error("Model not loaded yet");
+        return;
+    }
 
     // Creating mesh to check for collisions
     const triggerBallMesh = new THREE.Mesh(
@@ -908,9 +925,8 @@ function render()
     if (window.timerExpired == true) // Access the global variable set in countdowntimer.js
     {
         currentBallCount = 0; // Set ball count to 0, which will end the game
+        endGame();
     }
-
-    endGame();
 }
 
 setInterval(() =>{
