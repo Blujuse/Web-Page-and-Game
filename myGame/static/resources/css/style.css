@@ -351,35 +351,38 @@ input[type="submit"]:active
 
 .ballCountOverlay
 {
+  font-family: sandcastleFont;
+  font-weight: lighter;
   position: absolute;
-  top: 80px;
+  top: 130px;
   left: 90%;
   transform: translateX(-50%);
   font-size: 70px;
-  font-weight: bold;
-  color: Black;
+  color:#bba065;
 }
 
 .scoreCountOverlay
 {
+  font-family: sandcastleFont;
+  font-weight: lighter;
   position: absolute;
-  top: 80px;
+  top: 130px;
   left: 10%;
   transform: translateX(-50%);
   font-size: 70px;
-  font-weight: bold;
-  color: Black;
+  color:#bba065;
 }
 
 .countdownOverlay
 {
+  font-family: sandcastleFont;
+  font-weight: lighter;
   position: absolute;
-  top: 80px;
+  top: 130px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 70px;
-  font-weight: bold;
-  color: Black;
+  color:#bba065;
 }
 
 .hidden 
