@@ -29,8 +29,6 @@
   padding: 10px;
   text-align: center;
   height: 200px;    
-  background-position: center;
-  background-size: contain;
   position: relative;
 }
 
@@ -398,4 +396,32 @@ input[type="submit"]:active
 {
   width: 650px !important;
   height: 750px !important;
+}
+
+/*          */
+/* 404 PAGE */
+/*          */
+
+.noPage 
+{
+  font-family: sandcastleFont;
+  font-weight: 1;
+  font-size: larger;
+  color: #947e4e;
+
+  width: 500px;
+  height: 700px;
+  background-image: url('../images/SandcastleBox.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  
+  display: flex;  /* Add this line */
+  flex-direction: column;  /* Stack items vertically */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 70px;
+  border-radius: 4px;
+  z-index: 1000;
 }
