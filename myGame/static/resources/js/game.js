@@ -641,6 +641,90 @@ function updateCurrentScore()
 }
 
 //
+// FUNCTION TO CREATE PARTICLES ON HIT
+//
+
+function createExplosion(position)
+{
+    const maxParticles = 200; // Maximum number of particles
+    const explodeRadius = 0.5; // Controls the spead of explosion
+
+    const geometry = new THREE.BufferGeometry(); // Geometry used to create points in THREE js
+
+    const positions = []; // Used to store positions of points
+    const velocities = []; // Used to store current velocities of points
+    const sizes = []; // Stores the size of each point
+
+    for (let i = 0; i < maxParticles; i++) 
+    {
+        // Initial positions
+        positions.push(position.x);
+        positions.push(position.y);
+        positions.push(position.z);
+
+        // Random explosion directions
+        // random mathh stuff gets number between -1 and 1
+        // Using radius controls how far the particles go
+        velocities.push((Math.random() * 2 - 1) * explodeRadius);
+        velocities.push((Math.random() * 2 - 1) * explodeRadius);
+        velocities.push((Math.random() * 2 - 1) * explodeRadius);
+
+        // Particle size
+        sizes.push(0.5);
+    }
+
+    // Setting attributes to the particles geometry
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3)); // Position
+    geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 3)); // Velocity
+    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1).setUsage(THREE.DynamicDrawUsage)); // Size
+
+    // Creating material for particles to use
+    const material = new THREE.PointsMaterial({
+        color: 0x0041c2, // Particles Colour
+        size: 0.5, // Size
+        opacity: 1 // Set opacity
+    });
+
+    const particles = new THREE.Points(geometry, material); // Create particles
+    scene.add(particles); // Add particles to scene
+
+    let time = 0; // Trackeer for explosion animation
+    const lifetime = 1;
+    function explode() 
+    {
+        requestAnimationFrame(explode); // Keep animating particles
+        time += 0.01; // Add to time
+
+        // Set positions and velocities to the particles geometry
+        const positions = particles.geometry.attributes.position.array;
+        const velocities = particles.geometry.attributes.velocity.array;
+
+        // For each of the current particles
+        // Need the * 3, due to x y z
+        for (let i = 0; i < maxParticles * 3; i += 3) 
+        {
+            // Move particles based on velocity and time
+            positions[i] += velocities[i] * (1 - time); // Update x
+            positions[i + 1] += velocities[i + 1] * (1 - time); // Upadate y
+            positions[i + 2] += velocities[i + 2] * (1 - time); // Upadate z
+        }
+
+        // Set the particles for updating
+        particles.geometry.attributes.position.needsUpdate = true;
+
+        // Remove particles if they've been alive for longer than the lifetime
+        if (time > lifetime)
+        {
+            scene.remove(particles); // Remove particles
+            // Free up memory
+            geometry.dispose();
+            material.dispose();
+        }
+    }
+    explode(); // Start the animation loop
+}
+
+//
 // CHECK INTERSECTION BETWEEN BALL AND CASTLES
 //
 
@@ -659,6 +743,12 @@ function checkIntersection()
     sandcastleTriggerZone.forEach((sandcastleZones, index) => {
         if (ballTriggerZone.some(ballZones => ballZones.intersectsBox(sandcastleZones)))
         {
+            // Get ball's position at the moment of collision
+            const explosionPosition = ball.position.clone();
+
+            // Trigger explosion at this position
+            createExplosion(explosionPosition);
+            
             //console.log("HIT");
             sandcastleTriggerZone.splice(index, 1); // Destroys whatever is currently the element, basically whatever is hit
 
