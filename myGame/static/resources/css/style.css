@@ -16,37 +16,6 @@
   box-sizing: border-box;
 }
 
-/*                                  */
-/* BELOW CLASSES ARE FOR INDEX PAGE */
-/*                                  */
-
-/* The . at the begining selects elements with the header class */
-.header
-{
-  /* Padding will work from each side in the case as no sides are stated, to effect certain sides either use padding-left...etc */
-  /* To shorthand it the order is, top, right, bottom, left */
-  font-family: sandcastleFont;
-  padding: 10px;
-  text-align: center;
-  height: 200px;    
-  position: relative;
-}
-
-/* This is also a part of the header class but what is in here will only effect h1 parts in header */
-.header h1 
-{
-  font-size: 100px;
-  font-weight: 10;
-  color: #947e4e;
-}
-
-.header p
-{
-  font-size: 50px;
-  font-weight: 1;
-  color: #947e4e;
-}
-
 /*                */
 /* NAVIGATION BAR */
 /*                */
@@ -90,7 +59,7 @@
   font-weight: 1;
   font-size: large;
   text-align: center;
-  padding: 40px 70px;
+  padding: clamp(1rem, 5vw, 2rem) clamp(1rem, 10vw, 3rem);
   text-decoration: none;
   transition: all 0.3s ease-in-out;
   position: relative;
@@ -123,6 +92,103 @@
 {
   background-color: #0288d1;
   font-weight: bold;
+}
+
+/*                                  */
+/* BELOW CLASSES ARE FOR INDEX PAGE */
+/*                                  */
+
+/* The . at the begining selects elements with the header class */
+.header
+{
+  /* Padding will work from each side in the case as no sides are stated, to effect certain sides either use padding-left...etc */
+  /* To shorthand it the order is, top, right, bottom, left */
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  font-family: sandcastleFont;
+  padding: 0px;
+  height: auto;
+  width: 100%; /* Full width of the parent container */
+  position: relative;
+  box-sizing: border-box; /* Ensure padding doesn't affect width/height */
+  min-height: 200px; /* Set a minimum height */
+}
+
+/* This is also a part of the header class but what is in here will only effect h1 parts in header */
+.header h1 
+{
+  /* rem means "root element" so they scale to header */
+  font-size: clamp(4rem, 6vw, 8rem); /* Scales between 4rem and 8rem */
+  font-weight: 10;
+  color: #947e4e;
+  text-align: center;
+  margin: 0; /* Remove any default margins */
+}
+
+.header p
+{
+  font-size: clamp(2rem, 3vw, 4rem); /* Scales between 2rem and 4rem */
+  font-weight: 1;
+  color: #947e4e;
+  text-align: center;
+  margin: 0; /* Remove any default margins */
+}
+
+.header .descOverride h1
+{
+  font-size: clamp(4rem, 4vw, 8rem); /* Scales between 4rem and 8rem */
+  font-weight: 10;
+  color: #947e4e;
+  text-align: center;
+  margin: 0; /* Remove any default margins */
+}
+
+.header .descOverride p
+{
+  font-size: clamp(2rem, 1.5vw, 4rem); /* Scales between 2rem and 4rem */
+  font-weight: 1;
+  color: #947e4e;
+  text-align: center;
+  margin: 0; /* Remove any default margins */
+}
+
+.imageBox
+{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6vw;
+  gap: 10px; /* Add space between images */
+}
+
+.imageBox img 
+{
+  width: 100%;
+  max-width: 450px; /* Ensure image doesn't exceed 450px */
+  height: auto; /* Maintain aspect ratio */
+  border: 10px solid #fefae0;
+}
+
+.imageBox.imageOverride img 
+{
+  max-width: 800px !important;
+}
+
+
+/* Wavy border */
+.wavyBorder
+{
+  height: 170px;
+  background: linear-gradient(to top, #4facfe, #00f2fe); /* Gradient effect to mimic ocean */
+
+  --mask:
+    radial-gradient(43.42px at 50% calc(100% + 24px),#0000 calc(99% - 10px),#000 calc(101% - 10px) 99%,#0000 101%) calc(50% - 60px) calc(50% - 20px + .5px)/120px 40px repeat-x,
+    radial-gradient(43.42px at 50% -24px,#0000 calc(99% - 10px),#000 calc(101% - 10px) 99%,#0000 101%) 50% calc(50% + 20px)/120px 40px repeat-x;
+  -webkit-mask: var(--mask);
+          mask: var(--mask);
 }
 
 /*                           */
@@ -305,8 +371,11 @@ input[type="submit"]:active
   background: black;
   z-index: 200;
   color: white;
+  font-size: clamp(1rem, 8vw, 2rem);
   text-align: center;
-  line-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gameSplash.displayNone
@@ -320,8 +389,8 @@ input[type="submit"]:active
   background: black;
   z-index: -10;
   color: white;
+  font-size: clamp(1rem, 8vw, 2rem);
   text-align: center;
-  line-height: 90vh;
   transition: all 0.5s;
 }
 
@@ -347,6 +416,7 @@ input[type="submit"]:active
   top: 0;
   left: 0;
   z-index: -1;
+  overflow: hidden;
 }
 
 .ballCountOverlay
@@ -357,7 +427,7 @@ input[type="submit"]:active
   top: 130px;
   left: 90%;
   transform: translateX(-50%);
-  font-size: 70px;
+  font-size: clamp(1rem, 10vw, 4rem);
   color:#bba065;
 }
 
@@ -369,7 +439,7 @@ input[type="submit"]:active
   top: 130px;
   left: 10%;
   transform: translateX(-50%);
-  font-size: 70px;
+  font-size: clamp(1rem, 10vw, 4rem);
   color:#bba065;
 }
 
@@ -381,7 +451,7 @@ input[type="submit"]:active
   top: 130px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 70px;
+  font-size: clamp(1rem, 10vw, 4rem);
   color:#bba065;
 }
 
@@ -392,7 +462,7 @@ input[type="submit"]:active
 
 .gameEnd
 {
-  height: 1000px !important;
+  height: 700px !important;
 }
 
 .gameSizing
