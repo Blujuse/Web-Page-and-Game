@@ -37,7 +37,7 @@ Mouse - Aiming
 
 ### Game Page
 ![Game Page](CustomAssets/GamePage.png)
-![Game End Page](CustomAssets/GamePage.png)
+![Game End Page](CustomAssets/GameSplashPage.png)
 
 ## Server
 
