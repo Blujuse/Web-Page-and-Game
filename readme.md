@@ -36,7 +36,8 @@ Mouse - Aiming
 ![Register Page](CustomAssets/FourOFourPage.png)
 
 ### Game Page
-![Register Page](CustomAssets/GamePage.png)
+![Game Page](CustomAssets/GamePage.png)
+![Game End Page](CustomAssets/GamePage.png)
 
 ## Server
 
