@@ -45,6 +45,9 @@ The server for the website is deployed using nodejs and the information for user
 The user remains logged in using cookies, which uses a key to keep their current session secure, as this is a project i've named it "TEMP_KEY" as it is all for testing is not for actual use!
 
 ## Project Structure
+
+Below is the project structure for the website, I have static, secure, and root folders. The secure folder contains a database.json which I was going to use but ended up swithching to the current myphp database, app.js is
+in the project root so it can't be accessed by users. Finally I have the static folder which contains files users will need such as javascript, images, and html.
 ```
 myGame://
 |   app.js
