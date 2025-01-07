@@ -12,7 +12,12 @@ Mouse - Aiming
 
 ## Game Gallery
 
-<img src="/CustomAssets/GameImgOne.png" alt="Game Image One" width="300" height="200">
-<img src="/CustomAssets/GameImgTwo.png" alt="Game Image Two" width="300" height="200">
-<img src="/CustomAssets/GameImgThree.png" alt="Game Image Three" width="300" height="200">
-<img src="/CustomAssets/GameImgFour.png" alt="Game Image Four" width="300" height="200">
+<p float="left">
+  <img src="/CustomAssets/GameImgOne.png" alt="Game Image One" width="300" height="200">
+  <img src="/CustomAssets/GameImgTwo.png" alt="Game Image Two" width="300" height="200">
+</p>
+
+<p float="left">
+  <img src="/CustomAssets/GameImgThree.png" alt="Game Image Three" width="300" height="200">
+  <img src="/CustomAssets/GameImgFour.png" alt="Game Image Four" width="300" height="200">
+</p>
