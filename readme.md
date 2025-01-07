@@ -5,11 +5,6 @@ However, be cautious—your beach balls are limited, and running out will end th
 
 Alongside the game there is also a website which has been created, you can find images of both the game and webpages below!
 
-## Server
-
-The server for the website is deployed using nodejs and the information for users is stored on a php database. This database contains ID, username, password, and score, the password is encrypted so it is stored securely.
-The user remains logged in using cookies, which uses a key to keep their current session secure, as this is a project i've named it "TEMP_KEY" as it is all for testing is not for actual use!
-
 ## Controls
 
 Left Click - Shoot
@@ -42,6 +37,11 @@ Mouse - Aiming
 
 ### Game Page
 ![Register Page](CustomAssets/GamePage.png)
+
+## Server
+
+The server for the website is deployed using nodejs and the information for users is stored on a php database. This database contains ID, username, password, and score, the password is encrypted so it is stored securely.
+The user remains logged in using cookies, which uses a key to keep their current session secure, as this is a project i've named it "TEMP_KEY" as it is all for testing is not for actual use!
 
 ## Project Structure
 ```
