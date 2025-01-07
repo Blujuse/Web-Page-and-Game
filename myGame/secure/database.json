@@ -1,15 +1,15 @@
 [
     {
         "User":"0001",
-        "Name":"Will",
-        "Age":19,
-        "Hobbies":"Guitar"
+        "Username":"Will",
+        "Password":"1234",
+        "Score":0
     },
 
     {
         "User":"0002",
-        "Name":"Sean",
-        "Age":22,
-        "Hobbies":"Tinder"
+        "Username":"Sean",
+        "Password":"1234",
+        "Score":0
     }
 ]
