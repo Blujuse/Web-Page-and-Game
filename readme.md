@@ -1,8 +1,65 @@
 # Sandcastle Smasher, Web Game Project!
 
 ## Project Structure
+```
+myGame://
+|   app.js
+|
++---secure
+|       database.json
+|
+\---static
+    |   401page.html
+    |   404page.html
+    |   game.html
+    |   index.html
+    |   login.html
+    |   register.html
+    |
+    \---resources
+        +---ammo
+        |       ammo.js
+        |       three.core.js
+        |       three.module.js
+        |
+        +---audio
+        |       BackgroundMusic.mp3
+        |       Ocean.mp3
+        |       Pop.wav
+        |       Sand.wav
+        |       Seagulls.mp3
+        |
+        +---css
+        |       style.css
+        |
+        +---images
+        |       beachballs.jpg
+        |       GameImgFour.png
+        |       GameImgOne.png
+        |       GameImgThree.png
+        |       GameImgTwo.png
+        |       HowToPlayFour.png
+        |       HowToPlayOne.png
+        |       HowToPlayThree.png
+        |       HowToPlayTwo.png
+        |       SandcastleBox.png
+        |       Website_BG.png
+        |
+        +---js
+        |       countdowntimer.js
+        |       game.js
+        |       splashscreen.js
+        |       tutorialsessions.js
+        |
+        +---models
+        |       beach_ball.glb
+        |       low_poly_helicopter.glb
+        |
+        \---text
+                SANDCASTLE.otf
+                SANDCASTLE.ttf
 
-
+```
 ## Description:
 
 Sandcastle Smasher is a fast-paced, browser-based game that uses THREE.js for 3D rendering and ammo.js for realistic physics. Your mission is simple: smash as many sandcastles as possible before the timer runs out!
