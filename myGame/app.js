@@ -45,26 +45,42 @@ function registerUser(Username, Password, res)
   const saltRounds = 10;
   const score = 0;
   console.log("1")
-  bcrypt.hash(Password, saltRounds, (err, hashedPassword) => {
-    
+
+  const usernameCheck = 'SELECT * FROM user WHERE username = ?';
+  con.query(usernameCheck, [Username], (err, results) => {
     if (err)
     {
-      //if this is called, this means that there was an error with hashing the password
-      console.error("Error hashing the password: ", err);
-      return res.status(404).send('1');
-    };
+      console.error("Error checking username: ", err);
+      return res.status(500).send('Error Checking username');
+    }
 
-    const query = 'INSERT INTO user (username, password, score) VALUES (?, ?, ?)';
+    if (results.length > 0)
+    {
+      console.log("Username already exists");
+      return res.redirect('/400Page');
+    }
 
-    con.query(query, [Username, hashedPassword, score], (err, results) => {
-      if (err) 
+    bcrypt.hash(Password, saltRounds, (err, hashedPassword) => {
+    
+      if (err)
       {
-        //this is called when there is an error inputing the user
-        console.error("Error inserting user: ", err);
-        return res.status(404).send('2');
+        //if this is called, this means that there was an error with hashing the password
+        console.error("Error hashing the password: ", err);
+        return res.status(404).send('1');
       };
-      console.log('User registered successfully: ', results);
-      res.redirect('/registerPage');
+  
+      const query = 'INSERT INTO user (username, password, score) VALUES (?, ?, ?)';
+  
+      con.query(query, [Username, hashedPassword, score], (err, results) => {
+        if (err) 
+        {
+          //this is called when there is an error inputing the user
+          console.error("Error inserting user: ", err);
+          return res.status(404).send('2');
+        };
+        console.log('User registered successfully: ', results);
+        res.redirect('/registerPage');
+      });
     });
   });
 };
@@ -242,6 +258,10 @@ app.get('/loginPage', function(req,res){
 
 app.get('/401Page', function(req,res){
   res.sendFile(__dirname + '/static/401page.html');
+});
+
+app.get('/400Page', function(req,res){
+  res.sendFile(__dirname + '/static/400page.html');
 });
 
 app.get('*', function(req,res){
