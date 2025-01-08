@@ -44,7 +44,7 @@ function registerUser(Username, Password, res)
 {
   const saltRounds = 10;
   const score = 0;
-  console.log("1")
+  console.log("Starting Registration")
 
   const usernameCheck = 'SELECT * FROM user WHERE username = ?';
   con.query(usernameCheck, [Username], (err, results) => {
@@ -66,7 +66,7 @@ function registerUser(Username, Password, res)
       {
         //if this is called, this means that there was an error with hashing the password
         console.error("Error hashing the password: ", err);
-        return res.status(404).send('1');
+        return res.status(404).send('Error with hashing');
       };
   
       const query = 'INSERT INTO user (username, password, score) VALUES (?, ?, ?)';
@@ -76,7 +76,7 @@ function registerUser(Username, Password, res)
         {
           //this is called when there is an error inputing the user
           console.error("Error inserting user: ", err);
-          return res.status(404).send('2');
+          return res.status(404).send('Error putting user in database');
         };
         console.log('User registered successfully: ', results);
         res.redirect('/registerPage');
@@ -88,9 +88,9 @@ function registerUser(Username, Password, res)
 app.post('/register', (req, res) => {
   console.log("log")
   const { username, userPassword } = req.body;
-  console.log("0")
+  console.log("Taken user input")
   registerUser(username, userPassword, res);
-  console.log("123")
+  console.log("Success")
 });
 
 //
