@@ -7,6 +7,8 @@ node -v , Check version
 npm install express , install node
 npm install mysql , install sql stuff
 
+nodejs and xampp has to be placed in root directory for server to be launched
+
 Change this to specific install location when at home
 
 UNI :
