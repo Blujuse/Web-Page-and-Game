@@ -875,7 +875,7 @@ function moveCamForward()
     // Increment first to avoid one-frame delay
     currentCastlesSpawned++;
 
-    // Floating point tolerance check
+    // Floating point check
     if (previousCamPosZ >= spawnDist - 0.01 && spawnOnce == false)
     {
         createShootingGallery(4, nextSpawn);
@@ -885,7 +885,7 @@ function moveCamForward()
 
         if (currentCastlesSpawned >= spawnEveryFewCastles)
         {
-            // Calculate exact spawn positions to avoid drift
+            // Get exact spawn positions to avoid drift
             groundSpawnPos = Math.floor(previousCamPosZ / 50) * 50 + 50;
             waterSpawnPos = groundSpawnPos;
 
